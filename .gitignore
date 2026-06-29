@@ -1,7 +1,9 @@
-__pycache__/
+# 大模型文件不上传
+MOMENT-1-small/pytorch_model.bin
+*.bin
 *.pth
+__pycache__/
 cache/
 datasets/
 results/
 *.log
-*.txt

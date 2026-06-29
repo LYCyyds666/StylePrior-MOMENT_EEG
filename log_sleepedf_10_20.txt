@@ -1,0 +1,446 @@
+
+=======================================================
+BiM-TTA Baseline (NeurIPS 2025)
+Dataset:    SleepEDF
+Classes:    5
+Channels:   16
+Modalities: 2 × 8ch
+Seq len:    256
+K-Folds:    20
+Fold range: 11 ~ 20
+TTA:        True
+GPU:        0
+Device:     cuda:0
+=======================================================
+
+Loading SleepEDF LOSO (cross-subject)...
+  LOSO test=S01: train=51937, test=2650, dist={0: 1997, 1: 58, 2: 250, 3: 220, 4: 125}
+  LOSO test=S02: train=51785, test=2802, dist={0: 1856, 1: 109, 2: 562, 3: 105, 4: 170}
+  LOSO test=S03: train=51783, test=2804, dist={0: 1907, 1: 94, 2: 545, 3: 95, 4: 163}
+  LOSO test=S04: train=51767, test=2820, dist={0: 2008, 1: 61, 2: 485, 3: 57, 4: 209}
+  LOSO test=S05: train=52018, test=2569, dist={0: 1534, 1: 166, 2: 620, 3: 53, 4: 196}
+  LOSO test=S06: train=51865, test=2722, dist={0: 2258, 1: 44, 2: 217, 3: 135, 4: 68}
+  LOSO test=S07: train=51817, test=2770, dist={0: 2069, 1: 56, 2: 407, 3: 136, 4: 102}
+  LOSO test=S08: train=51777, test=2810, dist={0: 1958, 1: 89, 2: 403, 3: 162, 4: 198}
+  LOSO test=S09: train=51791, test=2796, dist={0: 1985, 1: 68, 2: 262, 3: 350, 4: 131}
+  LOSO test=S10: train=51866, test=2721, dist={0: 1739, 1: 19, 2: 561, 3: 170, 4: 232}
+  LOSO test=S11: train=51868, test=2719, dist={0: 1770, 1: 65, 2: 671, 3: 6, 4: 207}
+  LOSO test=S12: train=51946, test=2641, dist={0: 1839, 1: 13, 2: 502, 3: 129, 4: 158}
+  LOSO test=S13: train=51902, test=2685, dist={0: 1809, 1: 48, 2: 463, 3: 107, 4: 258}
+  LOSO test=S14: train=51773, test=2814, dist={0: 1941, 1: 57, 2: 497, 3: 147, 4: 172}
+  LOSO test=S15: train=51831, test=2756, dist={0: 1939, 1: 29, 2: 404, 3: 151, 4: 233}
+  LOSO test=S16: train=51971, test=2616, dist={0: 1836, 1: 41, 2: 354, 3: 177, 4: 208}
+  LOSO test=S17: train=51966, test=2621, dist={0: 1693, 1: 55, 2: 448, 3: 165, 4: 260}
+  LOSO test=S18: train=51846, test=2741, dist={0: 1915, 1: 21, 2: 328, 3: 215, 4: 262}
+  LOSO test=S19: train=51831, test=2756, dist={0: 1930, 1: 29, 2: 388, 3: 291, 4: 118}
+  LOSO test=S20: train=51813, test=2774, dist={0: 1427, 1: 118, 2: 833, 3: 110, 4: 286}
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+  Subject split: 14 train / 5 val
+运行 fold 11 ~ 20（共 10 个）
+
+=======================================================
+Fold 11/20  |  Dataset: SleepEDF
+=======================================================
+Epoch 1/30: Train: Acc=0.7572, F1=0.5145
+Val: Acc=0.7404, F1=0.5397
+Epoch 2/30: Train: Acc=0.7904, F1=0.5538
+Val: Acc=0.7494, F1=0.5421
+Epoch 3/30: Train: Acc=0.8024, F1=0.5669
+Val: Acc=0.7630, F1=0.5418
+Epoch 4/30: Train: Acc=0.8078, F1=0.5743
+Val: Acc=0.7666, F1=0.5636
+Epoch 5/30: Train: Acc=0.8119, F1=0.5818
+Val: Acc=0.7728, F1=0.5586
+Epoch 6/30: Train: Acc=0.8171, F1=0.5875
+Val: Acc=0.7743, F1=0.5396
+Epoch 7/30: Train: Acc=0.8212, F1=0.5941
+Val: Acc=0.7781, F1=0.5627
+Epoch 8/30: Train: Acc=0.8212, F1=0.5923
+Val: Acc=0.7525, F1=0.5469
+Epoch 9/30: Train: Acc=0.8229, F1=0.5988
+Val: Acc=0.7722, F1=0.5584
+Epoch 10/30: Train: Acc=0.8240, F1=0.5981
+Val: Acc=0.7494, F1=0.5527
+Epoch 11/30: Train: Acc=0.8246, F1=0.6013
+Val: Acc=0.7294, F1=0.5438
+Epoch 12/30: Train: Acc=0.8275, F1=0.6036
+Val: Acc=0.7763, F1=0.5630
+Epoch 13/30: Train: Acc=0.8295, F1=0.6028
+Val: Acc=0.7509, F1=0.5536
+Epoch 14/30: Train: Acc=0.8418, F1=0.6296
+Val: Acc=0.7762, F1=0.5480
+  Early stopping at epoch 14
+Fold 11 Baseline: Fold 11: Acc=0.7786, F1=0.4757
+  Running TTA...
+Fold 11 TTA: Fold 11: Acc=0.7731, F1=0.4263
+
+=======================================================
+Fold 12/20  |  Dataset: SleepEDF
+=======================================================
+Epoch 1/30: Train: Acc=0.7543, F1=0.5199
+Val: Acc=0.7609, F1=0.5084
+Epoch 2/30: Train: Acc=0.7902, F1=0.5617
+Val: Acc=0.7981, F1=0.5566
+Epoch 3/30: Train: Acc=0.8032, F1=0.5741
+Val: Acc=0.7318, F1=0.5436
+Epoch 4/30: Train: Acc=0.8043, F1=0.5766
+Val: Acc=0.7656, F1=0.5417
+Epoch 5/30: Train: Acc=0.8101, F1=0.5857
+Val: Acc=0.8086, F1=0.5830
+Epoch 6/30: Train: Acc=0.8130, F1=0.5891
+Val: Acc=0.7256, F1=0.5199
+Epoch 7/30: Train: Acc=0.8150, F1=0.5925
+Val: Acc=0.7515, F1=0.5578
+Epoch 8/30: Train: Acc=0.8260, F1=0.6105
+Val: Acc=0.7807, F1=0.5609
+  Early stopping at epoch 8
+Fold 12 Baseline: Fold 12: Acc=0.7444, F1=0.4470
+  Running TTA...
+Fold 12 TTA: Fold 12: Acc=0.7293, F1=0.3611
+
+=======================================================
+Fold 13/20  |  Dataset: SleepEDF
+=======================================================
+Epoch 1/30: Train: Acc=0.7506, F1=0.5048
+Val: Acc=0.7320, F1=0.5170
+Epoch 2/30: Train: Acc=0.7819, F1=0.5514
+Val: Acc=0.7042, F1=0.5191
+Epoch 3/30: Train: Acc=0.7906, F1=0.5598
+Val: Acc=0.7516, F1=0.5522
+Epoch 4/30: Train: Acc=0.8002, F1=0.5682
+Val: Acc=0.7294, F1=0.5388
+Epoch 5/30: Train: Acc=0.8040, F1=0.5747
+Val: Acc=0.7602, F1=0.5534
+Epoch 6/30: Train: Acc=0.8039, F1=0.5753
+Val: Acc=0.7783, F1=0.5513
+Epoch 7/30: Train: Acc=0.8114, F1=0.5850
+Val: Acc=0.7198, F1=0.5299
+Epoch 8/30: Train: Acc=0.8104, F1=0.5835
+Val: Acc=0.7698, F1=0.5709
+Epoch 9/30: Train: Acc=0.8166, F1=0.5899
+Val: Acc=0.7494, F1=0.5621
+Epoch 10/30: Train: Acc=0.8172, F1=0.5913
+Val: Acc=0.7650, F1=0.5588
+Epoch 11/30: Train: Acc=0.8180, F1=0.5926
+Val: Acc=0.7869, F1=0.5754
+Epoch 12/30: Train: Acc=0.8205, F1=0.5956
+Val: Acc=0.7747, F1=0.5698
+Epoch 13/30: Train: Acc=0.8210, F1=0.5966
+Val: Acc=0.7679, F1=0.5612
+Epoch 14/30: Train: Acc=0.8219, F1=0.6005
+Val: Acc=0.7664, F1=0.5591
+Epoch 15/30: Train: Acc=0.8253, F1=0.6030
+Val: Acc=0.7638, F1=0.5674
+Epoch 16/30: Train: Acc=0.8255, F1=0.6048
+Val: Acc=0.7658, F1=0.5454
+Epoch 17/30: Train: Acc=0.8270, F1=0.6055
+Val: Acc=0.7668, F1=0.5555
+Epoch 18/30: Train: Acc=0.8283, F1=0.6104
+Val: Acc=0.7859, F1=0.5638
+Epoch 19/30: Train: Acc=0.8308, F1=0.6135
+Val: Acc=0.7789, F1=0.5659
+Epoch 20/30: Train: Acc=0.8405, F1=0.6312
+Val: Acc=0.7825, F1=0.5641
+  Early stopping at epoch 20
+Fold 13 Baseline: Fold 13: Acc=0.7363, F1=0.5565
+  Running TTA...
+Fold 13 TTA: Fold 13: Acc=0.7326, F1=0.5185
+
+=======================================================
+Fold 14/20  |  Dataset: SleepEDF
+=======================================================
+Epoch 1/30: Train: Acc=0.7506, F1=0.5048
+Val: Acc=0.7080, F1=0.5067
+Epoch 2/30: Train: Acc=0.7819, F1=0.5514
+Val: Acc=0.6700, F1=0.4964
+Epoch 3/30: Train: Acc=0.7906, F1=0.5598
+Val: Acc=0.7354, F1=0.5474
+Epoch 4/30: Train: Acc=0.8002, F1=0.5682
+Val: Acc=0.7021, F1=0.5217
+Epoch 5/30: Train: Acc=0.8040, F1=0.5747
+Val: Acc=0.7400, F1=0.5454
+Epoch 6/30: Train: Acc=0.8039, F1=0.5753
+Val: Acc=0.7632, F1=0.5393
+Epoch 7/30: Train: Acc=0.8114, F1=0.5850
+Val: Acc=0.6948, F1=0.5153
+Epoch 8/30: Train: Acc=0.8104, F1=0.5835
+Val: Acc=0.7483, F1=0.5557
+Epoch 9/30: Train: Acc=0.8166, F1=0.5899
+Val: Acc=0.7299, F1=0.5516
+Epoch 10/30: Train: Acc=0.8172, F1=0.5913
+Val: Acc=0.7403, F1=0.5414
+Epoch 11/30: Train: Acc=0.8180, F1=0.5926
+Val: Acc=0.7745, F1=0.5670
+Epoch 12/30: Train: Acc=0.8205, F1=0.5956
+Val: Acc=0.7556, F1=0.5543
+Epoch 13/30: Train: Acc=0.8210, F1=0.5966
+Val: Acc=0.7472, F1=0.5416
+Epoch 14/30: Train: Acc=0.8219, F1=0.6005
+Val: Acc=0.7456, F1=0.5458
+Epoch 15/30: Train: Acc=0.8253, F1=0.6030
+Val: Acc=0.7443, F1=0.5567
+Epoch 16/30: Train: Acc=0.8255, F1=0.6048
+Val: Acc=0.7485, F1=0.5260
+Epoch 17/30: Train: Acc=0.8270, F1=0.6055
+Val: Acc=0.7536, F1=0.5459
+Epoch 18/30: Train: Acc=0.8283, F1=0.6104
+Val: Acc=0.7722, F1=0.5498
+Epoch 19/30: Train: Acc=0.8308, F1=0.6135
+Val: Acc=0.7634, F1=0.5519
+Epoch 20/30: Train: Acc=0.8405, F1=0.6312
+Val: Acc=0.7701, F1=0.5514
+  Early stopping at epoch 20
+Fold 14 Baseline: Fold 14: Acc=0.8333, F1=0.6061
+  Running TTA...
+Fold 14 TTA: Fold 14: Acc=0.7946, F1=0.5027
+
+=======================================================
+Fold 15/20  |  Dataset: SleepEDF
+=======================================================
+Epoch 1/30: Train: Acc=0.7474, F1=0.5081
+Val: Acc=0.7271, F1=0.5201
+Epoch 2/30: Train: Acc=0.7816, F1=0.5501
+Val: Acc=0.7591, F1=0.5513
+Epoch 3/30: Train: Acc=0.7858, F1=0.5591
+Val: Acc=0.7776, F1=0.5562
+Epoch 4/30: Train: Acc=0.7953, F1=0.5655
+Val: Acc=0.7213, F1=0.5327
+Epoch 5/30: Train: Acc=0.7985, F1=0.5689
+Val: Acc=0.6888, F1=0.5175
+Epoch 6/30: Train: Acc=0.8056, F1=0.5805
+Val: Acc=0.7421, F1=0.5505
+Epoch 7/30: Train: Acc=0.8096, F1=0.5832
+Val: Acc=0.7215, F1=0.5246
+Epoch 8/30: Train: Acc=0.8117, F1=0.5850
+Val: Acc=0.7298, F1=0.5258
+Epoch 9/30: Train: Acc=0.8222, F1=0.6030
+Val: Acc=0.7569, F1=0.5434
+Epoch 10/30: Train: Acc=0.8252, F1=0.6044
+Val: Acc=0.7613, F1=0.5440
+Epoch 11/30: Train: Acc=0.8251, F1=0.6040
+Val: Acc=0.7638, F1=0.5562
+Epoch 12/30: Train: Acc=0.8273, F1=0.6088
+Val: Acc=0.7444, F1=0.5439
+Epoch 13/30: Train: Acc=0.8276, F1=0.6099
+Val: Acc=0.6889, F1=0.5106
+Epoch 14/30: Train: Acc=0.8281, F1=0.6118
+Val: Acc=0.7487, F1=0.5512
+Epoch 15/30: Train: Acc=0.8302, F1=0.6130
+Val: Acc=0.7597, F1=0.5477
+Epoch 16/30: Train: Acc=0.8365, F1=0.6271
+Val: Acc=0.7413, F1=0.5403
+  Early stopping at epoch 16
+Fold 15 Baseline: Fold 15: Acc=0.8403, F1=0.5703
+  Running TTA...
+Fold 15 TTA: Fold 15: Acc=0.8139, F1=0.5093
+
+=======================================================
+Fold 16/20  |  Dataset: SleepEDF
+=======================================================
+Epoch 1/30: Train: Acc=0.7476, F1=0.5081
+Val: Acc=0.5752, F1=0.4232
+Epoch 2/30: Train: Acc=0.7801, F1=0.5514
+Val: Acc=0.6805, F1=0.4813
+Epoch 3/30: Train: Acc=0.7930, F1=0.5657
+Val: Acc=0.7014, F1=0.4842
+Epoch 4/30: Train: Acc=0.7949, F1=0.5667
+Val: Acc=0.7162, F1=0.5396
+Epoch 5/30: Train: Acc=0.8023, F1=0.5752
+Val: Acc=0.7093, F1=0.5222
+Epoch 6/30: Train: Acc=0.8096, F1=0.5856
+Val: Acc=0.7010, F1=0.5063
+Epoch 7/30: Train: Acc=0.8108, F1=0.5883
+Val: Acc=0.7434, F1=0.5205
+Epoch 8/30: Train: Acc=0.8117, F1=0.5900
+Val: Acc=0.7491, F1=0.5104
+Epoch 9/30: Train: Acc=0.8233, F1=0.6038
+Val: Acc=0.7191, F1=0.5211
+  Early stopping at epoch 9
+Fold 16 Baseline: Fold 16: Acc=0.7775, F1=0.5171
+  Running TTA...
+Fold 16 TTA: Fold 16: Acc=0.8234, F1=0.5779
+
+=======================================================
+Fold 17/20  |  Dataset: SleepEDF
+=======================================================
+Epoch 1/30: Train: Acc=0.7499, F1=0.5129
+Val: Acc=0.7375, F1=0.5057
+Epoch 2/30: Train: Acc=0.7877, F1=0.5548
+Val: Acc=0.7398, F1=0.5419
+Epoch 3/30: Train: Acc=0.8016, F1=0.5663
+Val: Acc=0.7072, F1=0.5178
+Epoch 4/30: Train: Acc=0.8096, F1=0.5766
+Val: Acc=0.6937, F1=0.5069
+Epoch 5/30: Train: Acc=0.8117, F1=0.5805
+Val: Acc=0.7576, F1=0.5524
+Epoch 6/30: Train: Acc=0.8148, F1=0.5836
+Val: Acc=0.7187, F1=0.5407
+Epoch 7/30: Train: Acc=0.8169, F1=0.5881
+Val: Acc=0.7231, F1=0.5270
+Epoch 8/30: Train: Acc=0.8183, F1=0.5907
+Val: Acc=0.7435, F1=0.5391
+Epoch 9/30: Train: Acc=0.8206, F1=0.5930
+Val: Acc=0.7613, F1=0.5496
+Epoch 10/30: Train: Acc=0.8315, F1=0.6122
+Val: Acc=0.7657, F1=0.5472
+Epoch 11/30: Train: Acc=0.8316, F1=0.6135
+Val: Acc=0.7354, F1=0.5088
+Epoch 12/30: Train: Acc=0.8365, F1=0.6199
+Val: Acc=0.7734, F1=0.5602
+Epoch 13/30: Train: Acc=0.8383, F1=0.6232
+Val: Acc=0.7718, F1=0.5645
+Epoch 14/30: Train: Acc=0.8392, F1=0.6234
+Val: Acc=0.7405, F1=0.5496
+Epoch 15/30: Train: Acc=0.8468, F1=0.6401
+Val: Acc=0.7582, F1=0.5480
+  Early stopping at epoch 15
+Fold 17 Baseline: Fold 17: Acc=0.8237, F1=0.5985
+  Running TTA...
+Fold 17 TTA: Fold 17: Acc=0.7863, F1=0.4991
+
+=======================================================
+Fold 18/20  |  Dataset: SleepEDF
+=======================================================
+Epoch 1/30: Train: Acc=0.7499, F1=0.5129
+Val: Acc=0.7920, F1=0.5524
+Epoch 2/30: Train: Acc=0.7877, F1=0.5548
+Val: Acc=0.7807, F1=0.5719
+Epoch 3/30: Train: Acc=0.8016, F1=0.5663
+Val: Acc=0.7605, F1=0.5614
+Epoch 4/30: Train: Acc=0.8096, F1=0.5766
+Val: Acc=0.7399, F1=0.5451
+Epoch 5/30: Train: Acc=0.8117, F1=0.5805
+Val: Acc=0.7999, F1=0.5840
+Epoch 6/30: Train: Acc=0.8148, F1=0.5836
+Val: Acc=0.7696, F1=0.5770
+Epoch 7/30: Train: Acc=0.8169, F1=0.5881
+Val: Acc=0.7781, F1=0.5750
+Epoch 8/30: Train: Acc=0.8183, F1=0.5907
+Val: Acc=0.7873, F1=0.5766
+Epoch 9/30: Train: Acc=0.8206, F1=0.5930
+Val: Acc=0.8100, F1=0.5925
+Epoch 10/30: Train: Acc=0.8230, F1=0.5962
+Val: Acc=0.8116, F1=0.5762
+Epoch 11/30: Train: Acc=0.8229, F1=0.6000
+Val: Acc=0.7824, F1=0.5229
+Epoch 12/30: Train: Acc=0.8353, F1=0.6168
+Val: Acc=0.8172, F1=0.5898
+  Early stopping at epoch 12
+Fold 18 Baseline: Fold 18: Acc=0.5257, F1=0.3729
+  Running TTA...
+Fold 18 TTA: Fold 18: Acc=0.6629, F1=0.4719
+
+=======================================================
+Fold 19/20  |  Dataset: SleepEDF
+=======================================================
+Epoch 1/30: Train: Acc=0.7499, F1=0.5129
+Val: Acc=0.7282, F1=0.5111
+Epoch 2/30: Train: Acc=0.7877, F1=0.5548
+Val: Acc=0.7289, F1=0.5435
+Epoch 3/30: Train: Acc=0.8016, F1=0.5663
+Val: Acc=0.6917, F1=0.5159
+Epoch 4/30: Train: Acc=0.8096, F1=0.5766
+Val: Acc=0.6760, F1=0.5082
+Epoch 5/30: Train: Acc=0.8117, F1=0.5805
+Val: Acc=0.7472, F1=0.5523
+Epoch 6/30: Train: Acc=0.8148, F1=0.5836
+Val: Acc=0.7008, F1=0.5367
+Epoch 7/30: Train: Acc=0.8169, F1=0.5881
+Val: Acc=0.7122, F1=0.5302
+Epoch 8/30: Train: Acc=0.8183, F1=0.5907
+Val: Acc=0.7324, F1=0.5417
+Epoch 9/30: Train: Acc=0.8206, F1=0.5930
+Val: Acc=0.7499, F1=0.5466
+Epoch 10/30: Train: Acc=0.8230, F1=0.5962
+Val: Acc=0.7690, F1=0.5441
+Epoch 11/30: Train: Acc=0.8229, F1=0.6000
+Val: Acc=0.7222, F1=0.4828
+Epoch 12/30: Train: Acc=0.8353, F1=0.6168
+Val: Acc=0.7723, F1=0.5608
+  Early stopping at epoch 12
+Fold 19 Baseline: Fold 19: Acc=0.8534, F1=0.5561
+  Running TTA...
+Fold 19 TTA: Fold 19: Acc=0.8262, F1=0.5165
+
+=======================================================
+Fold 20/20  |  Dataset: SleepEDF
+=======================================================
+Epoch 1/30: Train: Acc=0.7499, F1=0.5129
+Val: Acc=0.7614, F1=0.5105
+Epoch 2/30: Train: Acc=0.7877, F1=0.5548
+Val: Acc=0.7649, F1=0.5386
+Epoch 3/30: Train: Acc=0.8016, F1=0.5663
+Val: Acc=0.7305, F1=0.5072
+Epoch 4/30: Train: Acc=0.8096, F1=0.5766
+Val: Acc=0.7186, F1=0.5038
+Epoch 5/30: Train: Acc=0.8117, F1=0.5805
+Val: Acc=0.7755, F1=0.5489
+Epoch 6/30: Train: Acc=0.8148, F1=0.5836
+Val: Acc=0.7419, F1=0.5351
+Epoch 7/30: Train: Acc=0.8169, F1=0.5881
+Val: Acc=0.7487, F1=0.5264
+Epoch 8/30: Train: Acc=0.8183, F1=0.5907
+Val: Acc=0.7645, F1=0.5355
+Epoch 9/30: Train: Acc=0.8206, F1=0.5930
+Val: Acc=0.7789, F1=0.5400
+Epoch 10/30: Train: Acc=0.8315, F1=0.6122
+Val: Acc=0.7848, F1=0.5426
+Epoch 11/30: Train: Acc=0.8316, F1=0.6135
+Val: Acc=0.7523, F1=0.5016
+Epoch 12/30: Train: Acc=0.8365, F1=0.6199
+Val: Acc=0.7939, F1=0.5602
+Epoch 13/30: Train: Acc=0.8383, F1=0.6232
+Val: Acc=0.7923, F1=0.5630
+Epoch 14/30: Train: Acc=0.8392, F1=0.6234
+Val: Acc=0.7630, F1=0.5470
+Epoch 15/30: Train: Acc=0.8400, F1=0.6275
+Val: Acc=0.7622, F1=0.5427
+Epoch 16/30: Train: Acc=0.8430, F1=0.6305
+Val: Acc=0.7552, F1=0.5334
+Epoch 17/30: Train: Acc=0.8421, F1=0.6313
+Val: Acc=0.7835, F1=0.5406
+Epoch 18/30: Train: Acc=0.8524, F1=0.6487
+Val: Acc=0.7636, F1=0.5284
+  Early stopping at epoch 18
+Fold 20 Baseline: Fold 20: Acc=0.7073, F1=0.5759
+  Running TTA...
+Fold 20 TTA: Fold 20: Acc=0.6611, F1=0.4648
+
+=======================================================
+=== K-Fold Cross Validation Results ===
+Dataset: SleepEDF, K=20, Seed=2025
+Completed folds: 10/20
+
+🏆 Baseline Metrics:
+  Accuracy:          0.7621 ± 0.0915
+  Balanced Accuracy: 0.5964 ± 0.0613
+  F1 Score (Macro):  0.5276 ± 0.0709
+  Precision (Macro): 0.5470 ± 0.0719
+  Recall (Macro):    0.5964 ± 0.0613
+
+🚀 TTA Metrics:
+  Accuracy:          0.7603
+  Balanced Accuracy: 0.5219
+  F1 Score (Macro):  0.4848
+  Precision (Macro): 0.5367
+  Recall (Macro):    0.5219
+
+结果保存至: ./results/bimtta_SleepEDF_fold10-20_seed2025.pkl

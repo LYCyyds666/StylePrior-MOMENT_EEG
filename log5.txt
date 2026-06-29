@@ -1,0 +1,240 @@
+
+=======================================================
+BiM-TTA Baseline (NeurIPS 2025)
+Dataset:    REFED
+Classes:    2
+Channels:   16
+Modalities: 2 × 8ch
+Seq len:    256
+K-Folds:    32
+Fold range: 21 ~ 24
+TTA:        True
+GPU:        0
+Device:     cuda:0
+=======================================================
+
+Loading REFED LOSO (cross-subject)...
+  LOSO test=S01: train=94705, test=3055, dist={0: 588, 1: 2467}
+  LOSO test=S02: train=94705, test=3055, dist={0: 656, 1: 2399}
+  LOSO test=S03: train=94705, test=3055, dist={0: 661, 1: 2394}
+  LOSO test=S04: train=94705, test=3055, dist={0: 351, 1: 2704}
+  LOSO test=S05: train=94705, test=3055, dist={0: 840, 1: 2215}
+  LOSO test=S06: train=94705, test=3055, dist={0: 800, 1: 2255}
+  LOSO test=S07: train=94705, test=3055, dist={0: 744, 1: 2311}
+  LOSO test=S08: train=94705, test=3055, dist={0: 892, 1: 2163}
+  LOSO test=S09: train=94705, test=3055, dist={0: 917, 1: 2138}
+  LOSO test=S10: train=94705, test=3055, dist={0: 733, 1: 2322}
+  LOSO test=S11: train=94705, test=3055, dist={0: 1007, 1: 2048}
+  LOSO test=S12: train=94705, test=3055, dist={0: 589, 1: 2466}
+  LOSO test=S13: train=94705, test=3055, dist={0: 732, 1: 2323}
+  LOSO test=S14: train=94705, test=3055, dist={0: 788, 1: 2267}
+  LOSO test=S15: train=94705, test=3055, dist={0: 469, 1: 2586}
+  LOSO test=S16: train=94705, test=3055, dist={0: 900, 1: 2155}
+  LOSO test=S17: train=94705, test=3055, dist={0: 496, 1: 2559}
+  LOSO test=S18: train=94705, test=3055, dist={0: 899, 1: 2156}
+  LOSO test=S19: train=94705, test=3055, dist={0: 750, 1: 2305}
+  LOSO test=S20: train=94705, test=3055, dist={0: 944, 1: 2111}
+  LOSO test=S21: train=94705, test=3055, dist={0: 745, 1: 2310}
+  LOSO test=S22: train=94705, test=3055, dist={0: 311, 1: 2744}
+  LOSO test=S23: train=94705, test=3055, dist={0: 963, 1: 2092}
+  LOSO test=S24: train=94705, test=3055, dist={0: 449, 1: 2606}
+  LOSO test=S25: train=94705, test=3055, dist={0: 788, 1: 2267}
+  LOSO test=S26: train=94705, test=3055, dist={0: 772, 1: 2283}
+  LOSO test=S27: train=94705, test=3055, dist={0: 742, 1: 2313}
+  LOSO test=S28: train=94705, test=3055, dist={0: 702, 1: 2353}
+  LOSO test=S29: train=94705, test=3055, dist={0: 883, 1: 2172}
+  LOSO test=S30: train=94705, test=3055, dist={0: 886, 1: 2169}
+  LOSO test=S31: train=94705, test=3055, dist={0: 763, 1: 2292}
+  LOSO test=S32: train=94705, test=3055, dist={0: 691, 1: 2364}
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+  Subject split: 23 train / 8 val
+运行 fold 21 ~ 24（共 4 个）
+
+=======================================================
+Fold 21/32  |  Dataset: REFED
+=======================================================
+Epoch 1/30: Train: Acc=0.5780, F1=0.5244
+Val: Acc=0.5854, F1=0.5139
+Epoch 2/30: Train: Acc=0.5934, F1=0.5444
+Val: Acc=0.6218, F1=0.5277
+Epoch 3/30: Train: Acc=0.6038, F1=0.5549
+Val: Acc=0.6453, F1=0.5250
+Epoch 4/30: Train: Acc=0.6101, F1=0.5622
+Val: Acc=0.5949, F1=0.5230
+Epoch 5/30: Train: Acc=0.6141, F1=0.5671
+Val: Acc=0.6071, F1=0.5269
+Epoch 6/30: Train: Acc=0.6166, F1=0.5690
+Val: Acc=0.6580, F1=0.5267
+Epoch 7/30: Train: Acc=0.6230, F1=0.5748
+Val: Acc=0.5864, F1=0.5222
+Epoch 8/30: Train: Acc=0.6220, F1=0.5749
+Val: Acc=0.5813, F1=0.5147
+Epoch 9/30: Train: Acc=0.6258, F1=0.5784
+Val: Acc=0.5793, F1=0.5156
+Epoch 10/30: Train: Acc=0.6277, F1=0.5798
+Val: Acc=0.6547, F1=0.5341
+Epoch 11/30: Train: Acc=0.6334, F1=0.5847
+Val: Acc=0.6113, F1=0.5328
+Epoch 12/30: Train: Acc=0.6325, F1=0.5849
+Val: Acc=0.5554, F1=0.5089
+Epoch 13/30: Train: Acc=0.6362, F1=0.5878
+Val: Acc=0.6166, F1=0.5288
+Epoch 14/30: Train: Acc=0.6386, F1=0.5912
+Val: Acc=0.6419, F1=0.5347
+Epoch 15/30: Train: Acc=0.6406, F1=0.5926
+Val: Acc=0.5827, F1=0.5219
+Epoch 16/30: Train: Acc=0.6515, F1=0.6032
+Val: Acc=0.5481, F1=0.5052
+  Early stopping at epoch 16
+Fold 21 Baseline: Fold 21: Acc=0.6193, F1=0.5404
+  Running TTA...
+Fold 21 TTA: Fold 21: Acc=0.7031, F1=0.4918
+
+=======================================================
+Fold 22/32  |  Dataset: REFED
+=======================================================
+Epoch 1/30: Train: Acc=0.5789, F1=0.5260
+Val: Acc=0.5903, F1=0.5145
+Epoch 2/30: Train: Acc=0.5914, F1=0.5435
+Val: Acc=0.5953, F1=0.5235
+Epoch 3/30: Train: Acc=0.6018, F1=0.5556
+Val: Acc=0.6270, F1=0.5225
+Epoch 4/30: Train: Acc=0.6031, F1=0.5580
+Val: Acc=0.5754, F1=0.5132
+Epoch 5/30: Train: Acc=0.6068, F1=0.5622
+Val: Acc=0.5981, F1=0.5202
+Epoch 6/30: Train: Acc=0.6108, F1=0.5665
+Val: Acc=0.6237, F1=0.5224
+Epoch 7/30: Train: Acc=0.6237, F1=0.5792
+Val: Acc=0.5333, F1=0.4939
+  Early stopping at epoch 7
+Fold 22 Baseline: Fold 22: Acc=0.6592, F1=0.4762
+  Running TTA...
+Fold 22 TTA: Fold 22: Acc=0.6736, F1=0.4774
+
+=======================================================
+Fold 23/32  |  Dataset: REFED
+=======================================================
+Epoch 1/30: Train: Acc=0.5765, F1=0.5223
+Val: Acc=0.6250, F1=0.5306
+Epoch 2/30: Train: Acc=0.5948, F1=0.5435
+Val: Acc=0.6027, F1=0.5268
+Epoch 3/30: Train: Acc=0.6063, F1=0.5558
+Val: Acc=0.6052, F1=0.5219
+Epoch 4/30: Train: Acc=0.6121, F1=0.5620
+Val: Acc=0.5935, F1=0.5192
+Epoch 5/30: Train: Acc=0.6162, F1=0.5664
+Val: Acc=0.5910, F1=0.5234
+Epoch 6/30: Train: Acc=0.6190, F1=0.5691
+Val: Acc=0.6383, F1=0.5358
+Epoch 7/30: Train: Acc=0.6248, F1=0.5752
+Val: Acc=0.5658, F1=0.5138
+Epoch 8/30: Train: Acc=0.6231, F1=0.5742
+Val: Acc=0.5243, F1=0.4899
+Epoch 9/30: Train: Acc=0.6293, F1=0.5795
+Val: Acc=0.6113, F1=0.5286
+Epoch 10/30: Train: Acc=0.6301, F1=0.5802
+Val: Acc=0.6696, F1=0.5394
+Epoch 11/30: Train: Acc=0.6361, F1=0.5855
+Val: Acc=0.5751, F1=0.5211
+Epoch 12/30: Train: Acc=0.6356, F1=0.5860
+Val: Acc=0.5504, F1=0.5073
+Epoch 13/30: Train: Acc=0.6398, F1=0.5895
+Val: Acc=0.6449, F1=0.5412
+Epoch 14/30: Train: Acc=0.6442, F1=0.5951
+Val: Acc=0.6055, F1=0.5295
+Epoch 15/30: Train: Acc=0.6438, F1=0.5943
+Val: Acc=0.5666, F1=0.5154
+Epoch 16/30: Train: Acc=0.6597, F1=0.6092
+Val: Acc=0.5347, F1=0.5001
+  Early stopping at epoch 16
+Fold 23 Baseline: Fold 23: Acc=0.6344, F1=0.4477
+  Running TTA...
+Fold 23 TTA: Fold 23: Acc=0.6704, F1=0.5158
+
+=======================================================
+Fold 24/32  |  Dataset: REFED
+=======================================================
+Epoch 1/30: Train: Acc=0.5763, F1=0.5261
+Val: Acc=0.6545, F1=0.5345
+Epoch 2/30: Train: Acc=0.5952, F1=0.5477
+Val: Acc=0.5960, F1=0.5225
+Epoch 3/30: Train: Acc=0.6041, F1=0.5573
+Val: Acc=0.6343, F1=0.5279
+Epoch 4/30: Train: Acc=0.6087, F1=0.5618
+Val: Acc=0.6085, F1=0.5288
+Epoch 5/30: Train: Acc=0.6102, F1=0.5646
+Val: Acc=0.6253, F1=0.5253
+Epoch 6/30: Train: Acc=0.6138, F1=0.5676
+Val: Acc=0.6680, F1=0.5324
+Epoch 7/30: Train: Acc=0.6188, F1=0.5727
+Val: Acc=0.5937, F1=0.5254
+Epoch 8/30: Train: Acc=0.6179, F1=0.5726
+Val: Acc=0.5615, F1=0.5081
+Epoch 9/30: Train: Acc=0.6219, F1=0.5759
+Val: Acc=0.6408, F1=0.5295
+Epoch 10/30: Train: Acc=0.6252, F1=0.5791
+Val: Acc=0.6919, F1=0.5353
+Epoch 11/30: Train: Acc=0.6281, F1=0.5819
+Val: Acc=0.5764, F1=0.5175
+Epoch 12/30: Train: Acc=0.6382, F1=0.5931
+Val: Acc=0.5720, F1=0.5148
+  Early stopping at epoch 12
+Fold 24 Baseline: Fold 24: Acc=0.5231, F1=0.4434
+  Running TTA...
+Fold 24 TTA: Fold 24: Acc=0.6501, F1=0.4627
+
+=======================================================
+=== K-Fold Cross Validation Results ===
+Dataset: REFED, K=32, Seed=2025
+Completed folds: 4/32
+
+🏆 Baseline Metrics:
+  Accuracy:          0.6090 ± 0.0516
+  Balanced Accuracy: 0.5158 ± 0.0236
+  F1 Score (Macro):  0.4769 ± 0.0387
+  Precision (Macro): 0.5053 ± 0.0266
+  Recall (Macro):    0.5158 ± 0.0236
+  ROC AUC:           0.5261 ± 0.0293
+  Avg Prec:          0.8172 ± 0.0716
+
+🚀 TTA Metrics:
+  Accuracy:          0.6743
+  Balanced Accuracy: 0.5031
+  F1 Score (Macro):  0.4869
+  Precision (Macro): 0.5154
+  Recall (Macro):    0.5031
+  ROC AUC:           0.5215
+  Avg Prec:          0.8194
+
+结果保存至: ./results/bimtta_REFED_fold20-24_seed2025.pkl
