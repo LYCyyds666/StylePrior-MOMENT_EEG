@@ -39,12 +39,32 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--variant", default="full",
                     choices=["full", "wo_sisl", "wo_hse", "wo_stsa"])
 parser.add_argument("--data_dir", default="./datasets/sleepedf")
+parser.add_argument(
+    "--source_only",
+    action="store_true",
+    help="Disable STSA and evaluate source-stage components only",
+)
+parser.add_argument(
+    "--start_fold",
+    type=int,
+    default=0,
+    help="Starting fold index, inclusive and zero-based",
+)
+parser.add_argument(
+    "--end_fold",
+    type=int,
+    default=None,
+    help="Ending fold index, exclusive and zero-based",
+)
 args = parser.parse_args()
 
 # ── 全局配置 ───────────────────────────────────────────────────────────────────
 device         = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 variant        = args.variant
 data_dir       = args.data_dir
+source_only    = args.source_only
+start_fold     = args.start_fold
+end_fold       = args.end_fold
 seed           = 2025
 model_name     = "MOMENT-1-small"
 seq_len        = 256
@@ -60,7 +80,7 @@ weight_decay   = 1e-5
 early_stop     = 5
 reduction      = "concat"
 aux_loss_weight = 0.001
-enable_stsa    = (variant != "wo_stsa")
+enable_stsa    = (variant != "wo_stsa") and (not source_only)
 
 print(f"\n{'='*55}")
 print(f"消融变体: {variant}  |  enable_stsa: {enable_stsa}")
@@ -219,11 +239,11 @@ def load_k_fold_data():
         train_ds, val_ds = split_by_subject(train_dataset)
         fold_loaders.append((
             DataLoader(train_ds,     batch_size=batch_size, shuffle=True,
-                       num_workers=4, pin_memory=True, drop_last=False),
+                       num_workers=2, pin_memory=True, drop_last=False),
             DataLoader(val_ds,       batch_size=batch_size, shuffle=False,
-                       num_workers=4, pin_memory=True, drop_last=False),
+                       num_workers=2, pin_memory=True, drop_last=False),
             DataLoader(test_dataset, batch_size=batch_size, shuffle=False,
-                       num_workers=4, pin_memory=True, drop_last=False),
+                       num_workers=2, pin_memory=True, drop_last=False),
         ))
     return fold_loaders
 
@@ -503,7 +523,25 @@ def k_fold_cross_validation():
     fold_loaders     = load_k_fold_data()
     all_fold_results = []
 
-    for fi, (train_loader, val_loader, test_loader) in enumerate(fold_loaders):
+    _end = end_fold if end_fold is not None else len(fold_loaders)
+
+    if not (0 <= start_fold < _end <= len(fold_loaders)):
+        raise ValueError(
+            f"Invalid fold range: {start_fold}:{_end}; "
+            f"available folds: {len(fold_loaders)}"
+        )
+
+    fold_loaders_slice = fold_loaders[start_fold:_end]
+
+    print(
+        f"Running folds {start_fold} to {_end - 1} "
+        f"({len(fold_loaders_slice)} folds)"
+    )
+
+    for fold_offset, (train_loader, val_loader, test_loader) in enumerate(
+        fold_loaders_slice
+    ):
+        fi = start_fold + fold_offset
         print(f"\n{'='*55}")
         print(f"[{variant}] Fold {fi+1}/{k_folds}")
         print(f"{'='*55}")
@@ -560,13 +598,31 @@ def k_fold_cross_validation():
             print(f"\n🚀 TTA Metrics:\n  Accuracy: {np.mean(ta):.4f} ± {np.std(ta):.4f}")
 
     os.makedirs("./results", exist_ok=True)
-    sp = f"./results/ablation_sleepedf_{variant}_seed{seed}.pkl"
+
+    result_tag = (
+        f"{variant}_source_only"
+        if source_only
+        else variant
+    )
+    end_label = (
+        end_fold
+        if end_fold is not None
+        else k_folds
+    )
+    sp = (
+        f"./results/ablation_sleepedf_"
+        f"{result_tag}_fold{start_fold}-{end_label}_"
+        f"seed{seed}.pkl"
+    )
     with open(sp, 'wb') as f:
         pickle.dump({
             'variant':      variant,
             'dataset':      'SleepEDF',
             'seed':         seed,
             'k_folds':      k_folds,
+            'start_fold':   start_fold,
+            'end_fold':     end_label,
+            'source_only':  source_only,
             'mean_acc':     mean_acc,
             'std_acc':      std_acc,
             'fold_results': all_fold_results,

@@ -318,110 +318,325 @@ def initialize_unknown_subject_embeddings(model, train_sids, test_sids):
 
 # ── STSA 测试时自适应 ──────────────────────────────────────────────────────────
 
-def STSA(model, test_loader, tta_lr=5e-4, tta_steps_per_batch=1, tta_batch_size=64):
+def STSA(
+    model,
+    test_loader,
+    tta_lr=5e-4,
+    tta_steps_per_batch=1,
+    tta_batch_size=64,
+):
+    """
+    Subject-wise streaming STSA.
+
+    Each test subject is treated as an independent target stream.
+    StyleAdaptor and Adam states are reset before processing each subject.
+    Predictions from all test subjects are concatenated before computing
+    fold-level metrics.
+    """
     model.eval()
+
+    # Freeze the complete source model.
     for param in model.parameters():
         param.requires_grad = False
 
-    lids = [blk.shared_knowledge.layer_id
-            for blk in model.model.encoder.block
-            if hasattr(blk, 'shared_knowledge') and
-            hasattr(blk.shared_knowledge, 'layer_id')]
+    lids = [
+        blk.shared_knowledge.layer_id
+        for blk in model.model.encoder.block
+        if hasattr(blk, "shared_knowledge")
+        and hasattr(blk.shared_knowledge, "layer_id")
+    ]
     if not lids:
         return None
 
-    ada = StyleAdaptor(num_channels=input_channels,
-                       feature_dim=model.model.config.d_model).to(device)
-    ada.train()
+    # ------------------------------------------------------------
+    # Group dataset indices by target subject.
+    # Dictionary insertion order preserves the original stream order.
+    # ------------------------------------------------------------
+    subject_indices = {}
+    dataset = test_loader.dataset
 
-    for blk in model.model.encoder.block:
-        if hasattr(blk, 'shared_knowledge') and \
-           hasattr(blk.shared_knowledge, 'switch_to_STSA'):
-            blk.shared_knowledge.switch_to_STSA(ada)
+    for sample_idx in range(len(dataset)):
+        sample = dataset[sample_idx]
 
-    opt = optim.Adam(ada.parameters(), lr=tta_lr)
+        if len(sample) != 3:
+            # Fallback for a dataset without explicit subject IDs.
+            subject_id = 0
+        else:
+            raw_subject_id = sample[2]
 
-    tta_loader = (
-        DataLoader(test_loader.dataset, batch_size=tta_batch_size,
-                   shuffle=False, drop_last=False,
-                   num_workers=test_loader.num_workers,
-                   pin_memory=test_loader.pin_memory)
-        if tta_batch_size != test_loader.batch_size else test_loader
+            if torch.is_tensor(raw_subject_id):
+                subject_id = int(raw_subject_id.reshape(-1)[0].item())
+            else:
+                subject_id = int(raw_subject_id)
+
+        subject_indices.setdefault(subject_id, []).append(sample_idx)
+
+    print(
+        f"[STSA] Independent target streams: "
+        f"{len(subject_indices)} subjects "
+        f"{list(subject_indices.keys())}"
     )
 
-    all_p, all_l, all_pr = [], [], []
+    all_predictions = []
+    all_labels = []
+    all_probabilities = []
 
-    for bd in tta_loader:
-        if len(bd) == 3:
-            inputs, _, sid = bd[0].to(device), bd[1], bd[2].to(device)
-        else:
-            inputs, sid = bd[0].to(device), None
+    # ------------------------------------------------------------
+    # Process each target subject independently.
+    # ------------------------------------------------------------
+    for subject_id, indices in subject_indices.items():
 
-        for _ in range(tta_steps_per_batch):
-            with torch.enable_grad():
-                opt.zero_grad()
-                out    = model.classify(x_enc=inputs, subject_ids=sid)
-                logits = out.logits if hasattr(out, 'logits') else out
+        # New adapter: gamma=1 and beta=0.
+        ada = StyleAdaptor(
+            num_channels=input_channels,
+            feature_dim=model.model.config.d_model,
+        ).to(device)
+        ada.train()
 
-                confidence_weights = []
-                for blk in model.model.encoder.block:
-                    if not (hasattr(blk, 'shared_knowledge') and
-                            hasattr(blk.shared_knowledge, 'get_STSA_tta_features')):
-                        continue
-                    raw_f, norm_f, gamma, beta = blk.shared_knowledge.get_STSA_tta_features()
-                    if raw_f is None:
-                        continue
-                    B, C = gamma.shape[0], gamma.shape[1]
-                    rf4  = raw_f.view(B, C, raw_f.shape[1], raw_f.shape[2])
-                    eps  = 1e-8
-                    t_err_m = (rf4.mean(2) - beta).abs()  / (rf4.mean(2).abs()  + eps)
-                    t_err_s = (rf4.std(2)  - gamma).abs() / (rf4.std(2).abs()   + eps)
-                    t_disc  = (t_err_m + t_err_s).mean(-1)
-                    s_err_m = (rf4.mean(1) - beta.mean(1,  keepdim=True)).abs() / \
-                               (rf4.mean(1).abs() + eps)
-                    s_err_s = (rf4.std(1)  - gamma.mean(1, keepdim=True)).abs() / \
-                               (rf4.std(1).abs()  + eps)
-                    s_disc  = (s_err_m + s_err_s).mean(-1)
-                    confidence_weights.append(
-                        (t_disc.mean(1) + s_disc.mean(1)) / 2)
+        for blk in model.model.encoder.block:
+            if (
+                hasattr(blk, "shared_knowledge")
+                and hasattr(blk.shared_knowledge, "switch_to_STSA")
+            ):
+                blk.shared_knowledge.switch_to_STSA(ada)
 
-                if confidence_weights:
-                    final_conf = torch.stack(confidence_weights).mean(0)
-                else:
-                    final_conf = torch.ones(inputs.shape[0], device=device)
+        # New optimizer: Adam state is reset for this subject.
+        opt = optim.Adam(ada.parameters(), lr=tta_lr)
 
-                with torch.no_grad():
-                    pl = torch.argmax(logits, 1)
-                loss = (final_conf * F.cross_entropy(
-                    logits, pl, reduction='none')).mean()
-                loss.backward()
-                opt.step()
+        updated_parameters = sum(
+            p.numel()
+            for group in opt.param_groups
+            for p in group["params"]
+        )
 
-        with torch.no_grad():
-            eo = model.classify(x_enc=inputs, subject_ids=sid)
-            el = eo.logits if hasattr(eo, 'logits') else eo
-            ep = torch.softmax(el, 1)
-            all_p.append(torch.argmax(el, 1).cpu())
-            all_l.append(bd[1].cpu())
-            if num_classes == 2:
-                all_pr.append(ep[:, 1].cpu())
+        if updated_parameters != 16384:
+            raise RuntimeError(
+                f"Unexpected number of STSA-updated parameters: "
+                f"{updated_parameters}; expected 16384."
+            )
+
+        print(
+            f"[STSA] Subject {subject_id}: "
+            f"{len(indices)} samples, "
+            f"{updated_parameters} updated parameters"
+        )
+
+        subject_dataset = torch.utils.data.Subset(dataset, indices)
+
+        subject_loader = DataLoader(
+            subject_dataset,
+            batch_size=tta_batch_size,
+            shuffle=False,
+            drop_last=False,
+            num_workers=test_loader.num_workers,
+            pin_memory=test_loader.pin_memory,
+        )
+
+        for batch_data in subject_loader:
+            if len(batch_data) == 3:
+                inputs = batch_data[0].to(device)
+                labels = batch_data[1]
+                subject_ids = batch_data[2].to(device)
             else:
-                all_pr.append(ep.cpu())
+                inputs = batch_data[0].to(device)
+                labels = batch_data[1]
+                subject_ids = None
 
-    for blk in model.model.encoder.block:
-        if hasattr(blk, 'shared_knowledge') and \
-           hasattr(blk.shared_knowledge, 'switch_to_pretrain_mode'):
-            blk.shared_knowledge.switch_to_pretrain_mode()
+            # One or more adaptation steps on the incoming batch.
+            for _ in range(tta_steps_per_batch):
+                with torch.enable_grad():
+                    opt.zero_grad()
 
-    fp = torch.cat(all_p).numpy()
-    fl = torch.cat(all_l).numpy()
-    fpr = torch.cat(all_pr).numpy() if num_classes == 2 \
-        else torch.cat(all_pr, 0).numpy()
+                    output = model.classify(
+                        x_enc=inputs,
+                        subject_ids=subject_ids,
+                    )
+                    logits = (
+                        output.logits
+                        if hasattr(output, "logits")
+                        else output
+                    )
 
-    m = compute_comprehensive_metrics(fl, fp, fpr, num_classes)
-    del ada, opt
-    return {'overall_metrics': m, 'predictions': fp,
-            'true_labels': fl, 'probabilities': fpr}
+                    discrepancy_weights = []
+
+                    for blk in model.model.encoder.block:
+                        if not (
+                            hasattr(blk, "shared_knowledge")
+                            and hasattr(
+                                blk.shared_knowledge,
+                                "get_STSA_tta_features",
+                            )
+                        ):
+                            continue
+
+                        raw_f, norm_f, gamma, beta = (
+                            blk.shared_knowledge.get_STSA_tta_features()
+                        )
+
+                        if raw_f is None:
+                            continue
+
+                        batch_size = gamma.shape[0]
+                        channels = gamma.shape[1]
+
+                        raw_features_4d = raw_f.view(
+                            batch_size,
+                            channels,
+                            raw_f.shape[1],
+                            raw_f.shape[2],
+                        )
+
+                        epsilon = 1e-8
+
+                        temporal_mean = raw_features_4d.mean(dim=2)
+                        temporal_std = raw_features_4d.std(dim=2)
+
+                        temporal_error_mean = (
+                            (temporal_mean - beta).abs()
+                            / (temporal_mean.abs() + epsilon)
+                        )
+                        temporal_error_std = (
+                            (temporal_std - gamma).abs()
+                            / (temporal_std.abs() + epsilon)
+                        )
+
+                        temporal_discrepancy = (
+                            temporal_error_mean + temporal_error_std
+                        ).mean(dim=-1)
+
+                        spatial_mean = raw_features_4d.mean(dim=1)
+                        spatial_std = raw_features_4d.std(dim=1)
+
+                        spatial_beta = beta.mean(dim=1, keepdim=True)
+                        spatial_gamma = gamma.mean(dim=1, keepdim=True)
+
+                        spatial_error_mean = (
+                            (spatial_mean - spatial_beta).abs()
+                            / (spatial_mean.abs() + epsilon)
+                        )
+                        spatial_error_std = (
+                            (spatial_std - spatial_gamma).abs()
+                            / (spatial_std.abs() + epsilon)
+                        )
+
+                        spatial_discrepancy = (
+                            spatial_error_mean + spatial_error_std
+                        ).mean(dim=-1)
+
+                        sample_discrepancy = (
+                            temporal_discrepancy.mean(dim=1)
+                            + spatial_discrepancy.mean(dim=1)
+                        ) / 2
+
+                        discrepancy_weights.append(sample_discrepancy)
+
+                    if discrepancy_weights:
+                        final_discrepancy = torch.stack(
+                            discrepancy_weights
+                        ).mean(dim=0)
+                    else:
+                        final_discrepancy = torch.ones(
+                            inputs.shape[0],
+                            device=device,
+                        )
+
+                    # Pseudo-labels come only from model predictions.
+                    with torch.no_grad():
+                        pseudo_labels = torch.argmax(logits, dim=1)
+
+                    per_sample_loss = F.cross_entropy(
+                        logits,
+                        pseudo_labels,
+                        reduction="none",
+                    )
+
+                    loss = (
+                        final_discrepancy * per_sample_loss
+                    ).mean()
+
+                    loss.backward()
+                    opt.step()
+
+            # Evaluate the same batch after adaptation.
+            with torch.no_grad():
+                eval_output = model.classify(
+                    x_enc=inputs,
+                    subject_ids=subject_ids,
+                )
+                eval_logits = (
+                    eval_output.logits
+                    if hasattr(eval_output, "logits")
+                    else eval_output
+                )
+                eval_probabilities = torch.softmax(
+                    eval_logits,
+                    dim=1,
+                )
+                eval_predictions = torch.argmax(
+                    eval_logits,
+                    dim=1,
+                )
+
+            # Labels are used only here for final evaluation.
+            all_predictions.extend(
+                eval_predictions.cpu().numpy().tolist()
+            )
+            all_labels.extend(
+                labels.cpu().numpy().tolist()
+            )
+
+            if num_classes == 2:
+                all_probabilities.extend(
+                    eval_probabilities[:, 1]
+                    .cpu()
+                    .numpy()
+                    .tolist()
+                )
+            else:
+                all_probabilities.append(
+                    eval_probabilities.cpu().numpy()
+                )
+
+        # Return source blocks to their original inference mode.
+        for blk in model.model.encoder.block:
+            if (
+                hasattr(blk, "shared_knowledge")
+                and hasattr(
+                    blk.shared_knowledge,
+                    "switch_to_pretrain_mode",
+                )
+            ):
+                blk.shared_knowledge.switch_to_pretrain_mode()
+
+        del ada, opt
+
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+
+    predictions_array = np.asarray(all_predictions)
+    labels_array = np.asarray(all_labels)
+
+    if num_classes == 2:
+        probabilities_array = np.asarray(all_probabilities)
+    else:
+        probabilities_array = np.concatenate(
+            all_probabilities,
+            axis=0,
+        )
+
+    overall_metrics = compute_comprehensive_metrics(
+        labels_array,
+        predictions_array,
+        probabilities_array,
+        num_classes,
+    )
+
+    return {
+        "overall_metrics": overall_metrics,
+        "predictions": predictions_array,
+        "labels": labels_array,
+        "probabilities": probabilities_array,
+    }
 
 
 # ── K-Fold 主循环 ──────────────────────────────────────────────────────────────
@@ -520,15 +735,17 @@ def k_fold_cross_validation():
     if tta_folds:
         tm, ts = _agg('tta_metrics')
         print("\n🚀 TTA Metrics:")
-        print(f"  Accuracy:          {_p(tm,'accuracy')}")
-        print(f"  Balanced Accuracy: {_p(tm,'balanced_accuracy')}")
-        print(f"  F1 Score (Macro):  {_p(tm,'f1_macro')}")
-        print(f"  Precision (Macro): {_p(tm,'precision_macro')}")
-        print(f"  Recall (Macro):    {_p(tm,'recall_macro')}")
-        if 'roc_auc'           in tm: print(f"  ROC AUC:           {_p(tm,'roc_auc')}")
-        if 'average_precision' in tm: print(f"  Avg Prec:          {_p(tm,'average_precision')}")
+        print(f"  Accuracy:          {_ps(tm,ts,'accuracy')}")
+        print(f"  Balanced Accuracy: {_ps(tm,ts,'balanced_accuracy')}")
+        print(f"  F1 Score (Macro):  {_ps(tm,ts,'f1_macro')}")
+        print(f"  Precision (Macro): {_ps(tm,ts,'precision_macro')}")
+        print(f"  Recall (Macro):    {_ps(tm,ts,'recall_macro')}")
+        if 'roc_auc' in tm:
+            print(f"  ROC AUC:           {_ps(tm,ts,'roc_auc')}")
+        if 'average_precision' in tm:
+            print(f"  Avg Prec:          {_ps(tm,ts,'average_precision')}")
     else:
-        tm = None
+        tm, ts = None, None
 
     os.makedirs("./results", exist_ok=True)
     sp = f"./results/ss_moment_{dataset_name}_seed{seed}.pkl"
@@ -538,9 +755,11 @@ def k_fold_cross_validation():
             'seed':             seed,
             'k_folds':          k_folds,
             'completed_folds':  len(successful),
-            'baseline_metrics': bm,
-            'tta_metrics':      tm,
-            'fold_results':     all_fold_results,
+            'baseline_metrics':     bm,
+            'baseline_metrics_std': bs,
+            'tta_metrics':          tm,
+            'tta_metrics_std':      ts,
+            'fold_results':         all_fold_results,
         }, f)
     print(f"\n结果保存至: {sp}")
     return bm, tm

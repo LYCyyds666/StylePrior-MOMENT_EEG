@@ -787,22 +787,131 @@ def k_fold_cross_validation():
         tta_metrics = None
         if enable_tta:
             print(f"  Running TTA...")
-            # 重新加载模型（TTA 会修改部分参数）
-            model_tta = build_model()
-            model_tta.load_state_dict(best_state['state_dict'])
+            # ----------------------------------------------------------
+            # Subject-wise TTA:
+            # each target subject receives a fresh source model,
+            # fresh optimizer, and fresh BatchNorm running statistics.
+            # ----------------------------------------------------------
+            target_dataset = test_loader.dataset
+            subject_indices = {}
 
-            tta_preds, tta_lbls, tta_probs = tta_adapt(
-                model_tta, test_loader,
-                tta_lr=1e-4, tta_iters=1, lambda_mis=0.5, beta=0.3
+            for sample_idx in range(len(target_dataset)):
+                sample = target_dataset[sample_idx]
+
+                if len(sample) < 3:
+                    raise RuntimeError(
+                        "Subject-wise BiM-TTA requires subject IDs "
+                        "as the third element returned by the dataset."
+                    )
+
+                raw_subject_id = sample[2]
+
+                if torch.is_tensor(raw_subject_id):
+                    subject_id = int(
+                        raw_subject_id.reshape(-1)[0].item()
+                    )
+                else:
+                    subject_id = int(raw_subject_id)
+
+                subject_indices.setdefault(
+                    subject_id, []
+                ).append(sample_idx)
+
+            print(
+                f"  BiM-TTA independent target streams: "
+                f"{len(subject_indices)} subjects "
+                f"{list(subject_indices.keys())}"
             )
+
+            tta_preds = []
+            tta_lbls = []
+            binary_probabilities = []
+            multiclass_probabilities = []
+
+            for subject_id, indices in subject_indices.items():
+                print(
+                    f"    Subject {subject_id}: "
+                    f"{len(indices)} samples"
+                )
+
+                subject_dataset = Subset(
+                    target_dataset,
+                    indices,
+                )
+
+                subject_loader = DataLoader(
+                    subject_dataset,
+                    batch_size=test_loader.batch_size,
+                    shuffle=False,
+                    drop_last=False,
+                    num_workers=test_loader.num_workers,
+                    pin_memory=test_loader.pin_memory,
+                )
+
+                # A completely fresh source model is required because
+                # BiM-TTA modifies Conv/FC parameters and BN statistics.
+                model_tta = build_model()
+                model_tta.load_state_dict(
+                    best_state['state_dict']
+                )
+
+                subject_preds, subject_labels, subject_probs = (
+                    tta_adapt(
+                        model_tta,
+                        subject_loader,
+                        tta_lr=1e-4,
+                        tta_iters=1,
+                        lambda_mis=0.5,
+                        beta=0.3,
+                    )
+                )
+
+                tta_preds.extend(
+                    np.asarray(subject_preds).tolist()
+                )
+                tta_lbls.extend(
+                    np.asarray(subject_labels).tolist()
+                )
+
+                if num_classes == 2:
+                    binary_probabilities.extend(
+                        np.asarray(subject_probs).tolist()
+                    )
+                else:
+                    multiclass_probabilities.append(
+                        np.asarray(subject_probs)
+                    )
+
+                del model_tta
+                clear_gpu_memory()
+
+            if num_classes == 2:
+                tta_probs = np.asarray(
+                    binary_probabilities
+                )
+            else:
+                tta_probs = np.concatenate(
+                    multiclass_probabilities,
+                    axis=0,
+                )
+
+            # Metrics are computed after concatenating predictions
+            # from all independently adapted test subjects.
             tta_metrics = compute_comprehensive_metrics(
-                tta_lbls, tta_preds, tta_probs, num_classes)
-            tta_metrics['predictions']   = tta_preds
-            tta_metrics['true_labels']   = tta_lbls
+                tta_lbls,
+                tta_preds,
+                tta_probs,
+                num_classes,
+            )
+            tta_metrics['predictions'] = tta_preds
+            tta_metrics['true_labels'] = tta_lbls
             tta_metrics['probabilities'] = tta_probs
-            print_validation_results(tta_metrics, fold_idx + 1,
-                                     f"Fold {fold_idx+1} TTA: ")
-            del model_tta
+
+            print_validation_results(
+                tta_metrics,
+                fold_idx + 1,
+                f"Fold {fold_idx+1} TTA: ",
+            )
         else:
             tta_metrics = test_metrics
 
@@ -854,14 +963,23 @@ def k_fold_cross_validation():
     if 'average_precision' in mean_m: print(f"  Avg Prec:          {_p('average_precision')}")
 
     tta_m, tta_std = _agg('tta_metrics')
+
+    def _tp(key):
+        return (
+            f"{tta_m.get(key, 0.0):.4f} "
+            f"± {tta_std.get(key, 0.0):.4f}"
+        )
+
     print("\n🚀 TTA Metrics:")
-    print(f"  Accuracy:          {tta_m.get('accuracy',          0.0):.4f}")
-    print(f"  Balanced Accuracy: {tta_m.get('balanced_accuracy', 0.0):.4f}")
-    print(f"  F1 Score (Macro):  {tta_m.get('f1_macro',          0.0):.4f}")
-    print(f"  Precision (Macro): {tta_m.get('precision_macro',   0.0):.4f}")
-    print(f"  Recall (Macro):    {tta_m.get('recall_macro',      0.0):.4f}")
-    if 'roc_auc'           in tta_m: print(f"  ROC AUC:           {tta_m.get('roc_auc',           0.0):.4f}")
-    if 'average_precision' in tta_m: print(f"  Avg Prec:          {tta_m.get('average_precision',  0.0):.4f}")
+    print(f"  Accuracy:          {_tp('accuracy')}")
+    print(f"  Balanced Accuracy: {_tp('balanced_accuracy')}")
+    print(f"  F1 Score (Macro):  {_tp('f1_macro')}")
+    print(f"  Precision (Macro): {_tp('precision_macro')}")
+    print(f"  Recall (Macro):    {_tp('recall_macro')}")
+    if 'roc_auc' in tta_m:
+        print(f"  ROC AUC:           {_tp('roc_auc')}")
+    if 'average_precision' in tta_m:
+        print(f"  Avg Prec:          {_tp('average_precision')}")
 
     os.makedirs("./results", exist_ok=True)
     # 保存路径包含 fold 范围，方便多进程合并
@@ -875,9 +993,11 @@ def k_fold_cross_validation():
             'start_fold':       start_fold,
             'end_fold':         _end_label,
             'completed_folds':  len(successful),
-            'baseline_metrics': mean_m,
-            'tta_metrics':      tta_m,
-            'fold_results':     all_fold_results,
+            'baseline_metrics':     mean_m,
+            'baseline_metrics_std': std_m,
+            'tta_metrics':          tta_m,
+            'tta_metrics_std':      tta_std,
+            'fold_results':         all_fold_results,
         }, f)
     print(f"\n结果保存至: {save_path}")
     return mean_m, tta_m
