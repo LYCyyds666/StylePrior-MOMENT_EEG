@@ -1,0 +1,233 @@
+dataset,model,metric,metric_display,mean,std,n,cell,source_file
+APAVA,EEGNet,accuracy,Accuracy,0.509387129369529,0.1416817368897165,5,0.5094 ± 0.1417,./results/eegnet_APAVA_seed2025.pkl
+APAVA,GraphSleepNet,accuracy,Accuracy,0.6028004203197808,0.12990138644425223,5,0.6028 ± 0.1299,./results/graphsleepnet_APAVA_seed2025.pkl
+APAVA,SalientSleepNet,accuracy,Accuracy,0.5976774691798077,0.049110531142073414,5,0.5977 ± 0.0491,./results/salientsleepnet_APAVA_seed2025.pkl
+APAVA,MMCNN,accuracy,Accuracy,0.5309294799107154,0.16051176038326315,5,0.5309 ± 0.1605,./results/mmcnn_APAVA_seed2025.pkl
+APAVA,BiM-TTA,accuracy,Accuracy,0.5014114492290049,0.1384352030575766,5,0.5014 ± 0.1384,./results/bimtta_APAVA_fold0-5_seed2025.pkl
+APAVA,CBraMod,accuracy,Accuracy,0.6884390024800445,0.1404692618243637,5,0.6884 ± 0.1405,./results_cbramod/cbramod_APAVA_full_seed2025.pkl
+APAVA,MOMENT-linear,accuracy,Accuracy,0.5796217161871721,0.20483131290111187,5,0.5796 ± 0.2048,./results_moment_internal_parallel/APAVA/linear/moment_linear_APAVA_merged.pkl
+APAVA,MOMENT-full,accuracy,Accuracy,0.5514230101821676,0.1682240681101857,5,0.5514 ± 0.1682,./results_moment_internal_parallel/APAVA/full/moment_full_APAVA_merged.pkl
+APAVA,MOMENT-LoRA,accuracy,Accuracy,0.5831450148539572,0.1881646810168581,5,0.5831 ± 0.1882,./results_moment_internal_parallel/APAVA/lora/moment_lora_APAVA_merged.pkl
+APAVA,EEGNet,average_precision,Avg Prec,0.45587340069693294,0.2702767443657308,5,0.4559 ± 0.2703,./results/eegnet_APAVA_seed2025.pkl
+APAVA,GraphSleepNet,average_precision,Avg Prec,0.5843991378221313,0.3146726962120057,5,0.5844 ± 0.3147,./results/graphsleepnet_APAVA_seed2025.pkl
+APAVA,SalientSleepNet,average_precision,Avg Prec,0.6108726369371681,0.3233268623954434,5,0.6109 ± 0.3233,./results/salientsleepnet_APAVA_seed2025.pkl
+APAVA,MMCNN,average_precision,Avg Prec,0.4862770570323448,0.31310896341825023,5,0.4863 ± 0.3131,./results/mmcnn_APAVA_seed2025.pkl
+APAVA,BiM-TTA,average_precision,Avg Prec,0.35325105393333533,0.2276124348884712,5,0.3533 ± 0.2276,./results/bimtta_APAVA_fold0-5_seed2025.pkl
+APAVA,CBraMod,average_precision,Avg Prec,0.5288248976339398,0.3779648887936125,5,0.5288 ± 0.3780,./results_cbramod/cbramod_APAVA_full_seed2025.pkl
+APAVA,MOMENT-linear,average_precision,Avg Prec,0.7710939133700718,0.2112908780478068,5,0.7711 ± 0.2113,./results_moment_internal_parallel/APAVA/linear/moment_linear_APAVA_merged.pkl
+APAVA,MOMENT-full,average_precision,Avg Prec,0.6886990272437545,0.2453162362620046,5,0.6887 ± 0.2453,./results_moment_internal_parallel/APAVA/full/moment_full_APAVA_merged.pkl
+APAVA,MOMENT-LoRA,average_precision,Avg Prec,0.6975644840429348,0.23724974279199162,5,0.6976 ± 0.2372,./results_moment_internal_parallel/APAVA/lora/moment_lora_APAVA_merged.pkl
+APAVA,EEGNet,balanced_accuracy,Balanced Accuracy,0.4885379901438796,0.1588537122481368,5,0.4885 ± 0.1589,./results/eegnet_APAVA_seed2025.pkl
+APAVA,GraphSleepNet,balanced_accuracy,Balanced Accuracy,0.6210537056783968,0.12092189785743808,5,0.6211 ± 0.1209,./results/graphsleepnet_APAVA_seed2025.pkl
+APAVA,SalientSleepNet,balanced_accuracy,Balanced Accuracy,0.578929883005964,0.09331071517713098,5,0.5789 ± 0.0933,./results/salientsleepnet_APAVA_seed2025.pkl
+APAVA,MMCNN,balanced_accuracy,Balanced Accuracy,0.5501015752895165,0.1818863767505044,5,0.5501 ± 0.1819,./results/mmcnn_APAVA_seed2025.pkl
+APAVA,BiM-TTA,balanced_accuracy,Balanced Accuracy,0.5239413657992695,0.07558526333636492,5,0.5239 ± 0.0756,./results/bimtta_APAVA_fold0-5_seed2025.pkl
+APAVA,CBraMod,balanced_accuracy,Balanced Accuracy,0.6904202086325606,0.1449983967035205,5,0.6904 ± 0.1450,./results_cbramod/cbramod_APAVA_full_seed2025.pkl
+APAVA,MOMENT-linear,balanced_accuracy,Balanced Accuracy,0.657210911129103,0.1464210953341744,5,0.6572 ± 0.1464,./results_moment_internal_parallel/APAVA/linear/moment_linear_APAVA_merged.pkl
+APAVA,MOMENT-full,balanced_accuracy,Balanced Accuracy,0.6037724695225956,0.1431427101887526,5,0.6038 ± 0.1431,./results_moment_internal_parallel/APAVA/full/moment_full_APAVA_merged.pkl
+APAVA,MOMENT-LoRA,balanced_accuracy,Balanced Accuracy,0.6550878119643623,0.1566078727506957,5,0.6551 ± 0.1566,./results_moment_internal_parallel/APAVA/lora/moment_lora_APAVA_merged.pkl
+APAVA,EEGNet,f1_macro,F1 Score (Macro),0.4596659357326856,0.1727104711759367,5,0.4597 ± 0.1727,./results/eegnet_APAVA_seed2025.pkl
+APAVA,GraphSleepNet,f1_macro,F1 Score (Macro),0.5173661747830856,0.10292566497717881,5,0.5174 ± 0.1029,./results/graphsleepnet_APAVA_seed2025.pkl
+APAVA,SalientSleepNet,f1_macro,F1 Score (Macro),0.47638836459849737,0.09605533490762559,5,0.4764 ± 0.0961,./results/salientsleepnet_APAVA_seed2025.pkl
+APAVA,MMCNN,f1_macro,F1 Score (Macro),0.4777112618522631,0.18115363017869549,5,0.4777 ± 0.1812,./results/mmcnn_APAVA_seed2025.pkl
+APAVA,BiM-TTA,f1_macro,F1 Score (Macro),0.4054458858790748,0.08717370940641789,5,0.4054 ± 0.0872,./results/bimtta_APAVA_fold0-5_seed2025.pkl
+APAVA,CBraMod,f1_macro,F1 Score (Macro),0.6407128231413678,0.19020439973098952,5,0.6407 ± 0.1902,./results_cbramod/cbramod_APAVA_full_seed2025.pkl
+APAVA,MOMENT-linear,f1_macro,F1 Score (Macro),0.47944014699602555,0.17051244019767772,5,0.4794 ± 0.1705,./results_moment_internal_parallel/APAVA/linear/moment_linear_APAVA_merged.pkl
+APAVA,MOMENT-full,f1_macro,F1 Score (Macro),0.46795424980656125,0.15635921887240392,5,0.4680 ± 0.1564,./results_moment_internal_parallel/APAVA/full/moment_full_APAVA_merged.pkl
+APAVA,MOMENT-LoRA,f1_macro,F1 Score (Macro),0.4885239989380102,0.14334657703655362,5,0.4885 ± 0.1433,./results_moment_internal_parallel/APAVA/lora/moment_lora_APAVA_merged.pkl
+APAVA,EEGNet,precision_macro,Precision (Macro),0.5297466812082333,0.14361112667777992,5,0.5297 ± 0.1436,./results/eegnet_APAVA_seed2025.pkl
+APAVA,GraphSleepNet,precision_macro,Precision (Macro),0.6172720372768731,0.15267975542603426,5,0.6173 ± 0.1527,./results/graphsleepnet_APAVA_seed2025.pkl
+APAVA,SalientSleepNet,precision_macro,Precision (Macro),0.5317677217252692,0.12541127324910303,5,0.5318 ± 0.1254,./results/salientsleepnet_APAVA_seed2025.pkl
+APAVA,MMCNN,precision_macro,Precision (Macro),0.5620035466001676,0.17622452072323513,5,0.5620 ± 0.1762,./results/mmcnn_APAVA_seed2025.pkl
+APAVA,BiM-TTA,precision_macro,Precision (Macro),0.5243697544268027,0.1207882293659476,5,0.5244 ± 0.1208,./results/bimtta_APAVA_fold0-5_seed2025.pkl
+APAVA,CBraMod,precision_macro,Precision (Macro),0.6750395925517818,0.1381096594800868,5,0.6750 ± 0.1381,./results_cbramod/cbramod_APAVA_full_seed2025.pkl
+APAVA,MOMENT-linear,precision_macro,Precision (Macro),0.6161716517051442,0.09262898223668525,5,0.6162 ± 0.0926,./results_moment_internal_parallel/APAVA/linear/moment_linear_APAVA_merged.pkl
+APAVA,MOMENT-full,precision_macro,Precision (Macro),0.5586257496841861,0.10299236184133816,5,0.5586 ± 0.1030,./results_moment_internal_parallel/APAVA/full/moment_full_APAVA_merged.pkl
+APAVA,MOMENT-LoRA,precision_macro,Precision (Macro),0.6062844389125888,0.11325078714057557,5,0.6063 ± 0.1133,./results_moment_internal_parallel/APAVA/lora/moment_lora_APAVA_merged.pkl
+APAVA,EEGNet,recall_macro,Recall (Macro),0.45680233291802635,0.20032029167343757,5,0.4568 ± 0.2003,./results/eegnet_APAVA_seed2025.pkl
+APAVA,GraphSleepNet,recall_macro,Recall (Macro),0.5507559569492756,0.15123188968422333,5,0.5508 ± 0.1512,./results/graphsleepnet_APAVA_seed2025.pkl
+APAVA,SalientSleepNet,recall_macro,Recall (Macro),0.5188717856929647,0.14329739433463384,5,0.5189 ± 0.1433,./results/salientsleepnet_APAVA_seed2025.pkl
+APAVA,MMCNN,recall_macro,Recall (Macro),0.49490912794020653,0.21228814992552678,5,0.4949 ± 0.2123,./results/mmcnn_APAVA_seed2025.pkl
+APAVA,BiM-TTA,recall_macro,Recall (Macro),0.461268889401303,0.09241812069023565,5,0.4613 ± 0.0924,./results/bimtta_APAVA_fold0-5_seed2025.pkl
+APAVA,CBraMod,recall_macro,Recall (Macro),0.6408922493006797,0.2239786663667518,5,0.6409 ± 0.2240,./results_cbramod/cbramod_APAVA_full_seed2025.pkl
+APAVA,MOMENT-linear,recall_macro,Recall (Macro),0.5730424289214051,0.13683089038900584,5,0.5730 ± 0.1368,./results_moment_internal_parallel/APAVA/linear/moment_linear_APAVA_merged.pkl
+APAVA,MOMENT-full,recall_macro,Recall (Macro),0.5291900439597779,0.14680209387111787,5,0.5292 ± 0.1468,./results_moment_internal_parallel/APAVA/full/moment_full_APAVA_merged.pkl
+APAVA,MOMENT-LoRA,recall_macro,Recall (Macro),0.5699752484204262,0.1418874775465363,5,0.5700 ± 0.1419,./results_moment_internal_parallel/APAVA/lora/moment_lora_APAVA_merged.pkl
+APAVA,EEGNet,roc_auc,ROC AUC,0.428005615702242,0.30801233300179015,5,0.4280 ± 0.3080,./results/eegnet_APAVA_seed2025.pkl
+APAVA,GraphSleepNet,roc_auc,ROC AUC,0.5638527698630424,0.34060117517366223,5,0.5639 ± 0.3406,./results/graphsleepnet_APAVA_seed2025.pkl
+APAVA,SalientSleepNet,roc_auc,ROC AUC,0.5908965670201323,0.3151932079498915,5,0.5909 ± 0.3152,./results/salientsleepnet_APAVA_seed2025.pkl
+APAVA,MMCNN,roc_auc,ROC AUC,0.4442819937510185,0.3068176184589872,5,0.4443 ± 0.3068,./results/mmcnn_APAVA_seed2025.pkl
+APAVA,BiM-TTA,roc_auc,ROC AUC,0.3692728131631676,0.1918202833019949,5,0.3693 ± 0.1918,./results/bimtta_APAVA_fold0-5_seed2025.pkl
+APAVA,CBraMod,roc_auc,ROC AUC,0.6268566866927368,0.3397734735664865,5,0.6269 ± 0.3398,./results_cbramod/cbramod_APAVA_full_seed2025.pkl
+APAVA,MOMENT-linear,roc_auc,ROC AUC,0.7690632850664687,0.12773632701760065,4,0.7691 ± 0.1277,./results_moment_internal_parallel/APAVA/linear/moment_linear_APAVA_merged.pkl
+APAVA,MOMENT-full,roc_auc,ROC AUC,0.630473066052503,0.17526550362521068,4,0.6305 ± 0.1753,./results_moment_internal_parallel/APAVA/full/moment_full_APAVA_merged.pkl
+APAVA,MOMENT-LoRA,roc_auc,ROC AUC,0.69190090981215,0.16700431746045588,4,0.6919 ± 0.1670,./results_moment_internal_parallel/APAVA/lora/moment_lora_APAVA_merged.pkl
+Sleep-EDF,EEGNet,accuracy,Accuracy,0.725350840919038,0.09438790351104971,20,0.7254 ± 0.0944,./results/eegnet_SleepEDF_seed2025.pkl
+Sleep-EDF,GraphSleepNet,accuracy,Accuracy,0.7226864307658495,0.0827464283309643,20,0.7227 ± 0.0827,./results/graphsleepnet_SleepEDF_seed2025.pkl
+Sleep-EDF,SalientSleepNet,accuracy,Accuracy,0.7742178878556846,0.0800999638867011,20,0.7742 ± 0.0801,./results/salientsleepnet_SleepEDF_seed2025.pkl
+Sleep-EDF,MMCNN,accuracy,Accuracy,0.7829447976356168,0.06934000918431076,20,0.7829 ± 0.0693,./results/mmcnn_SleepEDF_seed2025.pkl
+Sleep-EDF,BiM-TTA,accuracy,Accuracy,0.7783685932243956,0.051392541046466816,20,0.7784 ± 0.0514,./results/bimtta_SleepEDF_seed2025.pkl
+Sleep-EDF,MOMENT-linear,accuracy,Accuracy,0.7846996156937747,0.07526437429342198,20,0.7847 ± 0.0753,./results_moment_internal_parallel/SleepEDF/linear/moment_linear_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-full,accuracy,Accuracy,0.8229724153855524,0.07598526520371209,20,0.8230 ± 0.0760,./results_moment_internal_parallel/SleepEDF/full/moment_full_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-LoRA,accuracy,Accuracy,0.8130682306625484,0.06910682570266943,20,0.8131 ± 0.0691,./results_moment_internal_parallel/SleepEDF/lora/moment_lora_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-linear,average_precision,Avg Prec,0.5063057064052431,0.05428584800635551,20,0.5063 ± 0.0543,./results_moment_internal_parallel/SleepEDF/linear/moment_linear_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-full,average_precision,Avg Prec,0.5681165959611311,0.05744216615356037,20,0.5681 ± 0.0574,./results_moment_internal_parallel/SleepEDF/full/moment_full_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-LoRA,average_precision,Avg Prec,0.5609808938212276,0.057775891334233144,20,0.5610 ± 0.0578,./results_moment_internal_parallel/SleepEDF/lora/moment_lora_SleepEDF_merged.pkl
+Sleep-EDF,EEGNet,balanced_accuracy,Balanced Accuracy,0.6108623724886149,0.06103514371236966,20,0.6109 ± 0.0610,./results/eegnet_SleepEDF_seed2025.pkl
+Sleep-EDF,GraphSleepNet,balanced_accuracy,Balanced Accuracy,0.5596965892731893,0.05399145430568894,20,0.5597 ± 0.0540,./results/graphsleepnet_SleepEDF_seed2025.pkl
+Sleep-EDF,SalientSleepNet,balanced_accuracy,Balanced Accuracy,0.5825110762002675,0.0593516586985418,20,0.5825 ± 0.0594,./results/salientsleepnet_SleepEDF_seed2025.pkl
+Sleep-EDF,MMCNN,balanced_accuracy,Balanced Accuracy,0.6376062291987468,0.057899664798745594,20,0.6376 ± 0.0579,./results/mmcnn_SleepEDF_seed2025.pkl
+Sleep-EDF,BiM-TTA,balanced_accuracy,Balanced Accuracy,0.545181222174699,0.06458952511450987,20,0.5452 ± 0.0646,./results/bimtta_SleepEDF_seed2025.pkl
+Sleep-EDF,MOMENT-linear,balanced_accuracy,Balanced Accuracy,0.4818727150939136,0.02990482703454641,20,0.4819 ± 0.0299,./results_moment_internal_parallel/SleepEDF/linear/moment_linear_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-full,balanced_accuracy,Balanced Accuracy,0.5425944873651745,0.04169788615679256,20,0.5426 ± 0.0417,./results_moment_internal_parallel/SleepEDF/full/moment_full_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-LoRA,balanced_accuracy,Balanced Accuracy,0.5406223122218804,0.04523854490299317,20,0.5406 ± 0.0452,./results_moment_internal_parallel/SleepEDF/lora/moment_lora_SleepEDF_merged.pkl
+Sleep-EDF,EEGNet,f1_macro,F1 Score (Macro),0.5080677386175143,0.06555496796991722,20,0.5081 ± 0.0656,./results/eegnet_SleepEDF_seed2025.pkl
+Sleep-EDF,GraphSleepNet,f1_macro,F1 Score (Macro),0.4792064412172133,0.056690681665339054,20,0.4792 ± 0.0567,./results/graphsleepnet_SleepEDF_seed2025.pkl
+Sleep-EDF,SalientSleepNet,f1_macro,F1 Score (Macro),0.5171100878909725,0.06587328935643348,20,0.5171 ± 0.0659,./results/salientsleepnet_SleepEDF_seed2025.pkl
+Sleep-EDF,MMCNN,f1_macro,F1 Score (Macro),0.5527824586394985,0.05481774409829366,20,0.5528 ± 0.0548,./results/mmcnn_SleepEDF_seed2025.pkl
+Sleep-EDF,BiM-TTA,f1_macro,F1 Score (Macro),0.5053549695704367,0.049830366566454336,20,0.5054 ± 0.0498,./results/bimtta_SleepEDF_seed2025.pkl
+Sleep-EDF,MOMENT-linear,f1_macro,F1 Score (Macro),0.4421175576984912,0.04917138852408231,20,0.4421 ± 0.0492,./results_moment_internal_parallel/SleepEDF/linear/moment_linear_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-full,f1_macro,F1 Score (Macro),0.5189552104170263,0.05492866934370429,20,0.5190 ± 0.0549,./results_moment_internal_parallel/SleepEDF/full/moment_full_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-LoRA,f1_macro,F1 Score (Macro),0.5041136014575555,0.05626416344023835,20,0.5041 ± 0.0563,./results_moment_internal_parallel/SleepEDF/lora/moment_lora_SleepEDF_merged.pkl
+Sleep-EDF,EEGNet,precision_macro,Precision (Macro),0.5240020703241901,0.05316957741667758,20,0.5240 ± 0.0532,./results/eegnet_SleepEDF_seed2025.pkl
+Sleep-EDF,GraphSleepNet,precision_macro,Precision (Macro),0.5005558447980664,0.049355682519784956,20,0.5006 ± 0.0494,./results/graphsleepnet_SleepEDF_seed2025.pkl
+Sleep-EDF,SalientSleepNet,precision_macro,Precision (Macro),0.5218631811975281,0.06096543375439837,20,0.5219 ± 0.0610,./results/salientsleepnet_SleepEDF_seed2025.pkl
+Sleep-EDF,MMCNN,precision_macro,Precision (Macro),0.5613146465141692,0.05057110447871796,20,0.5613 ± 0.0506,./results/mmcnn_SleepEDF_seed2025.pkl
+Sleep-EDF,BiM-TTA,precision_macro,Precision (Macro),0.5441839907046635,0.04142881428505896,20,0.5442 ± 0.0414,./results/bimtta_SleepEDF_seed2025.pkl
+Sleep-EDF,MOMENT-linear,precision_macro,Precision (Macro),0.4582636380520989,0.05991877574113406,20,0.4583 ± 0.0599,./results_moment_internal_parallel/SleepEDF/linear/moment_linear_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-full,precision_macro,Precision (Macro),0.5428202412954997,0.07463908238157146,20,0.5428 ± 0.0746,./results_moment_internal_parallel/SleepEDF/full/moment_full_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-LoRA,precision_macro,Precision (Macro),0.5171208191293599,0.07642449656962624,20,0.5171 ± 0.0764,./results_moment_internal_parallel/SleepEDF/lora/moment_lora_SleepEDF_merged.pkl
+Sleep-EDF,EEGNet,recall_macro,Recall (Macro),0.6108623724886149,0.06103514371236966,20,0.6109 ± 0.0610,./results/eegnet_SleepEDF_seed2025.pkl
+Sleep-EDF,GraphSleepNet,recall_macro,Recall (Macro),0.5596965892731893,0.05399145430568894,20,0.5597 ± 0.0540,./results/graphsleepnet_SleepEDF_seed2025.pkl
+Sleep-EDF,SalientSleepNet,recall_macro,Recall (Macro),0.5825110762002675,0.0593516586985418,20,0.5825 ± 0.0594,./results/salientsleepnet_SleepEDF_seed2025.pkl
+Sleep-EDF,MMCNN,recall_macro,Recall (Macro),0.6376062291987468,0.057899664798745594,20,0.6376 ± 0.0579,./results/mmcnn_SleepEDF_seed2025.pkl
+Sleep-EDF,BiM-TTA,recall_macro,Recall (Macro),0.545181222174699,0.06458952511450987,20,0.5452 ± 0.0646,./results/bimtta_SleepEDF_seed2025.pkl
+Sleep-EDF,MOMENT-linear,recall_macro,Recall (Macro),0.4818727150939136,0.02990482703454641,20,0.4819 ± 0.0299,./results_moment_internal_parallel/SleepEDF/linear/moment_linear_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-full,recall_macro,Recall (Macro),0.5425944873651745,0.04169788615679256,20,0.5426 ± 0.0417,./results_moment_internal_parallel/SleepEDF/full/moment_full_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-LoRA,recall_macro,Recall (Macro),0.5406223122218804,0.04523854490299317,20,0.5406 ± 0.0452,./results_moment_internal_parallel/SleepEDF/lora/moment_lora_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-linear,roc_auc,ROC AUC,0.8945641512460997,0.04710134566464382,20,0.8946 ± 0.0471,./results_moment_internal_parallel/SleepEDF/linear/moment_linear_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-full,roc_auc,ROC AUC,0.9248251555655547,0.04630573538287069,20,0.9248 ± 0.0463,./results_moment_internal_parallel/SleepEDF/full/moment_full_SleepEDF_merged.pkl
+Sleep-EDF,MOMENT-LoRA,roc_auc,ROC AUC,0.9193235827529923,0.048195609303967955,20,0.9193 ± 0.0482,./results_moment_internal_parallel/SleepEDF/lora/moment_lora_SleepEDF_merged.pkl
+REFED,EEGNet,accuracy,Accuracy,0.3361599836333879,0.09468139865679988,32,0.3362 ± 0.0947,./results/eegnet_REFED_seed2025.pkl
+REFED,GraphSleepNet,accuracy,Accuracy,0.6117635024549918,0.11385396211525718,32,0.6118 ± 0.1139,./results/graphsleepnet_REFED_seed2025.pkl
+REFED,SalientSleepNet,accuracy,Accuracy,0.32895867430441894,0.20363943754519873,32,0.3290 ± 0.2036,./results/salientsleepnet_REFED_seed2025.pkl
+REFED,MMCNN,accuracy,Accuracy,0.5474018003273322,0.10265765623299584,32,0.5474 ± 0.1027,./results/mmcnn_REFED_seed2025.pkl
+REFED,BiM-TTA,accuracy,Accuracy,0.6359656301145663,0.10308837588573655,32,0.6360 ± 0.1031,./results/bimtta_REFED_seed2025.pkl
+REFED,MOMENT-linear,accuracy,Accuracy,0.7599018003273322,0.05613783741112138,32,0.7599 ± 0.0561,./results_moment_internal_parallel/REFED/linear/moment_linear_REFED_merged.pkl
+REFED,MOMENT-full,accuracy,Accuracy,0.7448752045826514,0.05850502184110065,32,0.7449 ± 0.0585,./results_moment_internal_parallel/REFED/full/moment_full_REFED_merged.pkl
+REFED,MOMENT-LoRA,accuracy,Accuracy,0.7557078559738134,0.05676197554858171,32,0.7557 ± 0.0568,./results_moment_internal_parallel/REFED/lora/moment_lora_REFED_merged.pkl
+REFED,EEGNet,average_precision,Avg Prec,0.781829765299698,0.04978570685521166,32,0.7818 ± 0.0498,./results/eegnet_REFED_seed2025.pkl
+REFED,GraphSleepNet,average_precision,Avg Prec,0.7701935826662795,0.050613594456312715,32,0.7702 ± 0.0506,./results/graphsleepnet_REFED_seed2025.pkl
+REFED,SalientSleepNet,average_precision,Avg Prec,0.7626978579463518,0.052435793309638476,32,0.7627 ± 0.0524,./results/salientsleepnet_REFED_seed2025.pkl
+REFED,MMCNN,average_precision,Avg Prec,0.8017502442455384,0.0539587292554189,32,0.8018 ± 0.0540,./results/mmcnn_REFED_seed2025.pkl
+REFED,BiM-TTA,average_precision,Avg Prec,0.7916880003019768,0.04968599789390943,32,0.7917 ± 0.0497,./results/bimtta_REFED_seed2025.pkl
+REFED,MOMENT-linear,average_precision,Avg Prec,0.7717117523891831,0.05823173997883122,32,0.7717 ± 0.0582,./results_moment_internal_parallel/REFED/linear/moment_linear_REFED_merged.pkl
+REFED,MOMENT-full,average_precision,Avg Prec,0.7755235584214204,0.059013267475045664,32,0.7755 ± 0.0590,./results_moment_internal_parallel/REFED/full/moment_full_REFED_merged.pkl
+REFED,MOMENT-LoRA,average_precision,Avg Prec,0.7793359717750389,0.060597355826308506,32,0.7793 ± 0.0606,./results_moment_internal_parallel/REFED/lora/moment_lora_REFED_merged.pkl
+REFED,EEGNet,balanced_accuracy,Balanced Accuracy,0.5146450960986271,0.015622062164731214,32,0.5146 ± 0.0156,./results/eegnet_REFED_seed2025.pkl
+REFED,GraphSleepNet,balanced_accuracy,Balanced Accuracy,0.5115411634265079,0.030075618756920275,32,0.5115 ± 0.0301,./results/graphsleepnet_REFED_seed2025.pkl
+REFED,SalientSleepNet,balanced_accuracy,Balanced Accuracy,0.49990411651581035,0.0007707014821378428,32,0.4999 ± 0.0008,./results/salientsleepnet_REFED_seed2025.pkl
+REFED,MMCNN,balanced_accuracy,Balanced Accuracy,0.542425782318932,0.02918384326573339,32,0.5424 ± 0.0292,./results/mmcnn_REFED_seed2025.pkl
+REFED,BiM-TTA,balanced_accuracy,Balanced Accuracy,0.5098486597584609,0.024598958783264326,32,0.5098 ± 0.0246,./results/bimtta_REFED_seed2025.pkl
+REFED,MOMENT-linear,balanced_accuracy,Balanced Accuracy,0.5002682030569905,0.0017817186920789608,32,0.5003 ± 0.0018,./results_moment_internal_parallel/REFED/linear/moment_linear_REFED_merged.pkl
+REFED,MOMENT-full,balanced_accuracy,Balanced Accuracy,0.49993182336072717,0.006341160821001748,32,0.4999 ± 0.0063,./results_moment_internal_parallel/REFED/full/moment_full_REFED_merged.pkl
+REFED,MOMENT-LoRA,balanced_accuracy,Balanced Accuracy,0.5000303068407146,0.003672269350058595,32,0.5000 ± 0.0037,./results_moment_internal_parallel/REFED/lora/moment_lora_REFED_merged.pkl
+REFED,EEGNet,f1_macro,F1 Score (Macro),0.31929793366372206,0.10068732286076325,32,0.3193 ± 0.1007,./results/eegnet_REFED_seed2025.pkl
+REFED,GraphSleepNet,f1_macro,F1 Score (Macro),0.4771360674783085,0.05607786190251875,32,0.4771 ± 0.0561,./results/graphsleepnet_REFED_seed2025.pkl
+REFED,SalientSleepNet,f1_macro,F1 Score (Macro),0.23277706572689022,0.09823501074725981,32,0.2328 ± 0.0982,./results/salientsleepnet_REFED_seed2025.pkl
+REFED,MMCNN,f1_macro,F1 Score (Macro),0.48576698017137204,0.06681261868937796,32,0.4858 ± 0.0668,./results/mmcnn_REFED_seed2025.pkl
+REFED,BiM-TTA,f1_macro,F1 Score (Macro),0.48446770871884703,0.048366920601581424,32,0.4845 ± 0.0484,./results/bimtta_REFED_seed2025.pkl
+REFED,MOMENT-linear,f1_macro,F1 Score (Macro),0.43214931810935464,0.019529377502768796,32,0.4321 ± 0.0195,./results_moment_internal_parallel/REFED/linear/moment_linear_REFED_merged.pkl
+REFED,MOMENT-full,f1_macro,F1 Score (Macro),0.44790614585422317,0.02622874405994609,32,0.4479 ± 0.0262,./results_moment_internal_parallel/REFED/full/moment_full_REFED_merged.pkl
+REFED,MOMENT-LoRA,f1_macro,F1 Score (Macro),0.43763373982851206,0.019142598951792236,32,0.4376 ± 0.0191,./results_moment_internal_parallel/REFED/lora/moment_lora_REFED_merged.pkl
+REFED,EEGNet,precision_macro,Precision (Macro),0.528275869216908,0.0284823318463051,32,0.5283 ± 0.0285,./results/eegnet_REFED_seed2025.pkl
+REFED,GraphSleepNet,precision_macro,Precision (Macro),0.5095120769344118,0.044234155968217274,32,0.5095 ± 0.0442,./results/graphsleepnet_REFED_seed2025.pkl
+REFED,SalientSleepNet,precision_macro,Precision (Macro),0.22907339891357703,0.1624552960271939,32,0.2291 ± 0.1625,./results/salientsleepnet_REFED_seed2025.pkl
+REFED,MMCNN,precision_macro,Precision (Macro),0.538481011671937,0.029622402680835547,32,0.5385 ± 0.0296,./results/mmcnn_REFED_seed2025.pkl
+REFED,BiM-TTA,precision_macro,Precision (Macro),0.5130490277315237,0.028246862108142496,32,0.5130 ± 0.0282,./results/bimtta_REFED_seed2025.pkl
+REFED,MOMENT-linear,precision_macro,Precision (Macro),0.3952475798726335,0.0631959540371154,32,0.3952 ± 0.0632,./results_moment_internal_parallel/REFED/linear/moment_linear_REFED_merged.pkl
+REFED,MOMENT-full,precision_macro,Precision (Macro),0.47281352729406884,0.07858261891260868,32,0.4728 ± 0.0786,./results_moment_internal_parallel/REFED/full/moment_full_REFED_merged.pkl
+REFED,MOMENT-LoRA,precision_macro,Precision (Macro),0.49999523233260446,0.15438104116139142,32,0.5000 ± 0.1544,./results_moment_internal_parallel/REFED/lora/moment_lora_REFED_merged.pkl
+REFED,EEGNet,recall_macro,Recall (Macro),0.5146450960986271,0.015622062164731214,32,0.5146 ± 0.0156,./results/eegnet_REFED_seed2025.pkl
+REFED,GraphSleepNet,recall_macro,Recall (Macro),0.5115411634265079,0.030075618756920275,32,0.5115 ± 0.0301,./results/graphsleepnet_REFED_seed2025.pkl
+REFED,SalientSleepNet,recall_macro,Recall (Macro),0.49990411651581035,0.0007707014821378428,32,0.4999 ± 0.0008,./results/salientsleepnet_REFED_seed2025.pkl
+REFED,MMCNN,recall_macro,Recall (Macro),0.542425782318932,0.02918384326573339,32,0.5424 ± 0.0292,./results/mmcnn_REFED_seed2025.pkl
+REFED,BiM-TTA,recall_macro,Recall (Macro),0.5098486597584609,0.024598958783264326,32,0.5098 ± 0.0246,./results/bimtta_REFED_seed2025.pkl
+REFED,MOMENT-linear,recall_macro,Recall (Macro),0.5002682030569905,0.0017817186920789608,32,0.5003 ± 0.0018,./results_moment_internal_parallel/REFED/linear/moment_linear_REFED_merged.pkl
+REFED,MOMENT-full,recall_macro,Recall (Macro),0.49993182336072717,0.006341160821001748,32,0.4999 ± 0.0063,./results_moment_internal_parallel/REFED/full/moment_full_REFED_merged.pkl
+REFED,MOMENT-LoRA,recall_macro,Recall (Macro),0.5000303068407146,0.003672269350058595,32,0.5000 ± 0.0037,./results_moment_internal_parallel/REFED/lora/moment_lora_REFED_merged.pkl
+REFED,EEGNet,roc_auc,ROC AUC,0.5280231069754303,0.03554151398102642,32,0.5280 ± 0.0355,./results/eegnet_REFED_seed2025.pkl
+REFED,GraphSleepNet,roc_auc,ROC AUC,0.5182116942447927,0.04541740821300654,32,0.5182 ± 0.0454,./results/graphsleepnet_REFED_seed2025.pkl
+REFED,SalientSleepNet,roc_auc,ROC AUC,0.5000187293215752,0.022030514708126964,32,0.5000 ± 0.0220,./results/salientsleepnet_REFED_seed2025.pkl
+REFED,MMCNN,roc_auc,ROC AUC,0.567796259219688,0.04199522839274495,32,0.5678 ± 0.0420,./results/mmcnn_REFED_seed2025.pkl
+REFED,BiM-TTA,roc_auc,ROC AUC,0.5354508461182528,0.04192697224202581,32,0.5355 ± 0.0419,./results/bimtta_REFED_seed2025.pkl
+REFED,MOMENT-linear,roc_auc,ROC AUC,0.5196336686931302,0.0451776823454464,32,0.5196 ± 0.0452,./results_moment_internal_parallel/REFED/linear/moment_linear_REFED_merged.pkl
+REFED,MOMENT-full,roc_auc,ROC AUC,0.522846989526334,0.04268462988072667,32,0.5228 ± 0.0427,./results_moment_internal_parallel/REFED/full/moment_full_REFED_merged.pkl
+REFED,MOMENT-LoRA,roc_auc,ROC AUC,0.5306701712678662,0.05226552417248902,32,0.5307 ± 0.0523,./results_moment_internal_parallel/REFED/lora/moment_lora_REFED_merged.pkl
+BCI2a,EEGNet,accuracy,Accuracy,0.25000000000000006,0.019912789970006083,9,0.2500 ± 0.0199,./results/eegnet_BCI2a_seed2025.pkl
+BCI2a,GraphSleepNet,accuracy,Accuracy,0.27044753086419754,0.02559124066632253,9,0.2704 ± 0.0256,./results/graphsleepnet_BCI2a_seed2025.pkl
+BCI2a,SalientSleepNet,accuracy,Accuracy,0.25,0.0,9,0.2500 ± 0.0000,./results/salientsleepnet_BCI2a_seed2025.pkl
+BCI2a,MMCNN,accuracy,Accuracy,0.24074074074074073,0.03907857179660679,9,0.2407 ± 0.0391,./results/mmcnn_BCI2a_seed2025.pkl
+BCI2a,BiM-TTA,accuracy,Accuracy,0.3015046296296296,0.04273012718049706,9,0.3015 ± 0.0427,./results/bimtta_BCI2a_seed2025.pkl
+BCI2a,EEGNet,balanced_accuracy,Balanced Accuracy,0.25000000000000006,0.019912789970006083,9,0.2500 ± 0.0199,./results/eegnet_BCI2a_seed2025.pkl
+BCI2a,GraphSleepNet,balanced_accuracy,Balanced Accuracy,0.27044753086419754,0.02559124066632253,9,0.2704 ± 0.0256,./results/graphsleepnet_BCI2a_seed2025.pkl
+BCI2a,SalientSleepNet,balanced_accuracy,Balanced Accuracy,0.25,0.0,9,0.2500 ± 0.0000,./results/salientsleepnet_BCI2a_seed2025.pkl
+BCI2a,MMCNN,balanced_accuracy,Balanced Accuracy,0.24074074074074073,0.03907857179660678,9,0.2407 ± 0.0391,./results/mmcnn_BCI2a_seed2025.pkl
+BCI2a,BiM-TTA,balanced_accuracy,Balanced Accuracy,0.30150462962962965,0.042730127180497075,9,0.3015 ± 0.0427,./results/bimtta_BCI2a_seed2025.pkl
+BCI2a,EEGNet,f1_macro,F1 Score (Macro),0.23080704636910804,0.025348247880003765,9,0.2308 ± 0.0253,./results/eegnet_BCI2a_seed2025.pkl
+BCI2a,GraphSleepNet,f1_macro,F1 Score (Macro),0.16858417336613485,0.044178765572217595,9,0.1686 ± 0.0442,./results/graphsleepnet_BCI2a_seed2025.pkl
+BCI2a,SalientSleepNet,f1_macro,F1 Score (Macro),0.1,0.0,9,0.1000 ± 0.0000,./results/salientsleepnet_BCI2a_seed2025.pkl
+BCI2a,MMCNN,f1_macro,F1 Score (Macro),0.23410718351250853,0.03642273767189549,9,0.2341 ± 0.0364,./results/mmcnn_BCI2a_seed2025.pkl
+BCI2a,BiM-TTA,f1_macro,F1 Score (Macro),0.28182059776092117,0.03999292853334725,9,0.2818 ± 0.0400,./results/bimtta_BCI2a_seed2025.pkl
+BCI2a,EEGNet,precision_macro,Precision (Macro),0.2509760429611431,0.026163699616318772,9,0.2510 ± 0.0262,./results/eegnet_BCI2a_seed2025.pkl
+BCI2a,GraphSleepNet,precision_macro,Precision (Macro),0.14719255890203162,0.04136558927772913,9,0.1472 ± 0.0414,./results/graphsleepnet_BCI2a_seed2025.pkl
+BCI2a,SalientSleepNet,precision_macro,Precision (Macro),0.0625,0.0,9,0.0625 ± 0.0000,./results/salientsleepnet_BCI2a_seed2025.pkl
+BCI2a,MMCNN,precision_macro,Precision (Macro),0.24409355247511583,0.03392320559821555,9,0.2441 ± 0.0339,./results/mmcnn_BCI2a_seed2025.pkl
+BCI2a,BiM-TTA,precision_macro,Precision (Macro),0.29873112212644365,0.040181256333438865,9,0.2987 ± 0.0402,./results/bimtta_BCI2a_seed2025.pkl
+BCI2a,EEGNet,recall_macro,Recall (Macro),0.25000000000000006,0.019912789970006083,9,0.2500 ± 0.0199,./results/eegnet_BCI2a_seed2025.pkl
+BCI2a,GraphSleepNet,recall_macro,Recall (Macro),0.27044753086419754,0.02559124066632253,9,0.2704 ± 0.0256,./results/graphsleepnet_BCI2a_seed2025.pkl
+BCI2a,SalientSleepNet,recall_macro,Recall (Macro),0.25,0.0,9,0.2500 ± 0.0000,./results/salientsleepnet_BCI2a_seed2025.pkl
+BCI2a,MMCNN,recall_macro,Recall (Macro),0.24074074074074073,0.03907857179660678,9,0.2407 ± 0.0391,./results/mmcnn_BCI2a_seed2025.pkl
+BCI2a,BiM-TTA,recall_macro,Recall (Macro),0.30150462962962965,0.042730127180497075,9,0.3015 ± 0.0427,./results/bimtta_BCI2a_seed2025.pkl
+APAVA,StylePrior-MOMENT + STSA,accuracy,Accuracy,0.676283771333854,0.1657720099363941,5,0.6763 ± 0.1658,./results/ss_moment_APAVA_seed2025.pkl
+APAVA,StylePrior-MOMENT + STSA,balanced_accuracy,Balanced Accuracy,0.7108658153372308,0.1540151060878566,5,0.7109 ± 0.1540,./results/ss_moment_APAVA_seed2025.pkl
+APAVA,StylePrior-MOMENT + STSA,f1_macro,F1 Score (Macro),0.5968463967414094,0.1649019289771311,5,0.5968 ± 0.1649,./results/ss_moment_APAVA_seed2025.pkl
+APAVA,StylePrior-MOMENT + STSA,precision_macro,Precision (Macro),0.6422082288438833,0.1497905722924544,5,0.6422 ± 0.1498,./results/ss_moment_APAVA_seed2025.pkl
+APAVA,StylePrior-MOMENT + STSA,recall_macro,Recall (Macro),0.6304736584744857,0.18603855248967616,5,0.6305 ± 0.1860,./results/ss_moment_APAVA_seed2025.pkl
+APAVA,StylePrior-MOMENT + STSA,roc_auc,ROC AUC,0.6016592030918299,0.3388684666834125,5,0.6017 ± 0.3389,./results/ss_moment_APAVA_seed2025.pkl
+APAVA,StylePrior-MOMENT + STSA,average_precision,Avg Prec,0.5654121982143059,0.34911169390388197,5,0.5654 ± 0.3491,./results/ss_moment_APAVA_seed2025.pkl
+APAVA,StylePrior-MOMENT (source),accuracy,Accuracy,0.6074772439243418,0.19027435704472648,5,0.6075 ± 0.1903,./results/ss_moment_APAVA_seed2025.pkl
+APAVA,StylePrior-MOMENT (source),balanced_accuracy,Balanced Accuracy,0.677655707897135,0.165063892895965,5,0.6777 ± 0.1651,./results/ss_moment_APAVA_seed2025.pkl
+APAVA,StylePrior-MOMENT (source),f1_macro,F1 Score (Macro),0.5096707336910313,0.12629665293723977,5,0.5097 ± 0.1263,./results/ss_moment_APAVA_seed2025.pkl
+APAVA,StylePrior-MOMENT (source),precision_macro,Precision (Macro),0.6102390347704825,0.11462677929947553,5,0.6102 ± 0.1146,./results/ss_moment_APAVA_seed2025.pkl
+APAVA,StylePrior-MOMENT (source),recall_macro,Recall (Macro),0.5873870078245134,0.13861196568294165,5,0.5874 ± 0.1386,./results/ss_moment_APAVA_seed2025.pkl
+APAVA,StylePrior-MOMENT (source),roc_auc,ROC AUC,0.6041019284545277,0.3412740828820321,5,0.6041 ± 0.3413,./results/ss_moment_APAVA_seed2025.pkl
+APAVA,StylePrior-MOMENT (source),average_precision,Avg Prec,0.5684969810505275,0.35132242830285726,5,0.5685 ± 0.3513,./results/ss_moment_APAVA_seed2025.pkl
+Sleep-EDF,StylePrior-MOMENT + STSA,accuracy,Accuracy,0.8276999764912525,0.048965051185938926,20,0.8277 ± 0.0490,./results/ss_moment_SleepEDF_seed2025.pkl
+Sleep-EDF,StylePrior-MOMENT + STSA,balanced_accuracy,Balanced Accuracy,0.5027110868982164,0.05992700411148433,20,0.5027 ± 0.0599,./results/ss_moment_SleepEDF_seed2025.pkl
+Sleep-EDF,StylePrior-MOMENT + STSA,f1_macro,F1 Score (Macro),0.49813681934456505,0.05161831832998864,20,0.4981 ± 0.0516,./results/ss_moment_SleepEDF_seed2025.pkl
+Sleep-EDF,StylePrior-MOMENT + STSA,precision_macro,Precision (Macro),0.5665601876651822,0.05937775072012,20,0.5666 ± 0.0594,./results/ss_moment_SleepEDF_seed2025.pkl
+Sleep-EDF,StylePrior-MOMENT + STSA,recall_macro,Recall (Macro),0.5027110868982164,0.05992700411148433,20,0.5027 ± 0.0599,./results/ss_moment_SleepEDF_seed2025.pkl
+Sleep-EDF,StylePrior-MOMENT + STSA,roc_auc_ovr,ROC AUC,0.9263005553265236,0.028982309398965463,20,0.9263 ± 0.0290,./results/ss_moment_SleepEDF_seed2025.pkl
+Sleep-EDF,StylePrior-MOMENT + STSA,average_precision_macro,Avg Prec,0.0,0.0,20,0.0000 ± 0.0000,./results/ss_moment_SleepEDF_seed2025.pkl
+Sleep-EDF,StylePrior-MOMENT (source),accuracy,Accuracy,0.8358930213732872,0.06463610853945614,20,0.8359 ± 0.0646,./results/ss_moment_SleepEDF_seed2025.pkl
+Sleep-EDF,StylePrior-MOMENT (source),balanced_accuracy,Balanced Accuracy,0.5712642136764351,0.04225338218058748,20,0.5713 ± 0.0423,./results/ss_moment_SleepEDF_seed2025.pkl
+Sleep-EDF,StylePrior-MOMENT (source),f1_macro,F1 Score (Macro),0.545725661599664,0.05826860935235654,20,0.5457 ± 0.0583,./results/ss_moment_SleepEDF_seed2025.pkl
+Sleep-EDF,StylePrior-MOMENT (source),precision_macro,Precision (Macro),0.5622223661587082,0.08082838912895521,20,0.5622 ± 0.0808,./results/ss_moment_SleepEDF_seed2025.pkl
+Sleep-EDF,StylePrior-MOMENT (source),recall_macro,Recall (Macro),0.5712642136764351,0.04225338218058748,20,0.5713 ± 0.0423,./results/ss_moment_SleepEDF_seed2025.pkl
+Sleep-EDF,StylePrior-MOMENT (source),roc_auc_ovr,ROC AUC,0.9339692396199755,0.040301999212785156,20,0.9340 ± 0.0403,./results/ss_moment_SleepEDF_seed2025.pkl
+Sleep-EDF,StylePrior-MOMENT (source),average_precision_macro,Avg Prec,0.0,0.0,20,0.0000 ± 0.0000,./results/ss_moment_SleepEDF_seed2025.pkl
+REFED,StylePrior-MOMENT + STSA,accuracy,Accuracy,0.6865998363338789,0.05487368565576118,32,0.6866 ± 0.0549,./results/ss_moment_REFED_seed2025.pkl
+REFED,StylePrior-MOMENT + STSA,balanced_accuracy,Balanced Accuracy,0.5071731868112508,0.016701204022169427,32,0.5072 ± 0.0167,./results/ss_moment_REFED_seed2025.pkl
+REFED,StylePrior-MOMENT + STSA,f1_macro,F1 Score (Macro),0.49673741453201076,0.023648251147398682,32,0.4967 ± 0.0236,./results/ss_moment_REFED_seed2025.pkl
+REFED,StylePrior-MOMENT + STSA,precision_macro,Precision (Macro),0.5098844500368415,0.021515108413460687,32,0.5099 ± 0.0215,./results/ss_moment_REFED_seed2025.pkl
+REFED,StylePrior-MOMENT + STSA,recall_macro,Recall (Macro),0.5071731868112508,0.016701204022169427,32,0.5072 ± 0.0167,./results/ss_moment_REFED_seed2025.pkl
+REFED,StylePrior-MOMENT + STSA,roc_auc,ROC AUC,0.5222260538912055,0.0389488511793642,32,0.5222 ± 0.0389,./results/ss_moment_REFED_seed2025.pkl
+REFED,StylePrior-MOMENT + STSA,average_precision,Avg Prec,0.7733849913038371,0.05741901652099459,32,0.7734 ± 0.0574,./results/ss_moment_REFED_seed2025.pkl
+REFED,StylePrior-MOMENT (source),accuracy,Accuracy,0.7119373977086744,0.06115073582575264,32,0.7119 ± 0.0612,./results/ss_moment_REFED_seed2025.pkl
+REFED,StylePrior-MOMENT (source),balanced_accuracy,Balanced Accuracy,0.5070724105221679,0.013904114167357286,32,0.5071 ± 0.0139,./results/ss_moment_REFED_seed2025.pkl
+REFED,StylePrior-MOMENT (source),f1_macro,F1 Score (Macro),0.48774424338686617,0.0271258710809485,32,0.4877 ± 0.0271,./results/ss_moment_REFED_seed2025.pkl
+REFED,StylePrior-MOMENT (source),precision_macro,Precision (Macro),0.5121898832193257,0.024950564474406467,32,0.5122 ± 0.0250,./results/ss_moment_REFED_seed2025.pkl
+REFED,StylePrior-MOMENT (source),recall_macro,Recall (Macro),0.5070724105221679,0.013904114167357286,32,0.5071 ± 0.0139,./results/ss_moment_REFED_seed2025.pkl
+REFED,StylePrior-MOMENT (source),roc_auc,ROC AUC,0.5270529981406146,0.034340640714397894,32,0.5271 ± 0.0343,./results/ss_moment_REFED_seed2025.pkl
+REFED,StylePrior-MOMENT (source),average_precision,Avg Prec,0.7770724667564742,0.05628432537128824,32,0.7771 ± 0.0563,./results/ss_moment_REFED_seed2025.pkl
