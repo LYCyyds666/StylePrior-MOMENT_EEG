@@ -58,7 +58,7 @@ DATASET_CFG = {
                      num_subjects=23,  k_folds=5,  data_dir=None,               sr=256.0),
     "BCI2a":    dict(seq_len=1024, input_channels=16, num_classes=4,
                      num_subjects=9,   k_folds=9,  data_dir="./datasets/bci2a",    sr=256.0),
-    "SleepEDF": dict(seq_len=1024, input_channels=16, num_classes=5,
+    "SleepEDF": dict(seq_len=256, input_channels=16, num_classes=5,
                      num_subjects=20,  k_folds=20, data_dir="./datasets/sleepedf", sr=256.0),
     "REFED":    dict(seq_len=256, input_channels=16, num_classes=2,
                      num_subjects=32,  k_folds=32, data_dir="./datasets/refed",    sr=256.0),

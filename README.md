@@ -38,13 +38,16 @@ The main files are organized as follows:
 ├── bimtta_baseline.py
 ├── cbramod_baseline_multidataset.py
 ├── preprocessing.py
-├── preprocessing_bci2a.py
 ├── preprocessing_sleepedf.py
 ├── preprocessing_refed.py
 ├── download.py
 ├── collect_metrics_table.py
 ├── aggregate_pkl_results.py
 ├── audit_paper_consistency.py
+├── run_sleepedf_baseline_shard.py
+├── merge_sleepedf_baseline_shards.py
+├── regenerate_main_paper_tables.py
+├── inject_styleprior_metrics.py
 ├── merge_bimtta_results.py
 ├── merge_moment_internal_parallel.py
 ├── merge_cbramod_parallel.py
@@ -134,7 +137,7 @@ datasets/
 
 APAVA loading and five-fold subject splits are implemented in `preprocessing.py`. Processed APAVA folds are cached under `./cache` by default.
 
-The datasets are not redistributed in this repository. Download them from their original providers and follow their access and usage conditions. The preprocessing code converts the inputs used by StylePrior-MOMENT to 16 channels, 256 Hz, and 256 samples per example. Baseline scripts may retain architecture-specific temporal lengths, as documented in the manuscript.
+The datasets are not redistributed in this repository. Download them from their original providers and follow their access and usage conditions. The preprocessing code converts the inputs used by StylePrior-MOMENT to 16 channels, 256 Hz, and 256 samples per example. The cached Sleep-EDF array has shape `(n_epochs, 16, 256)`. The reported Sleep-EDF configurations of GraphSleepNet, SalientSleepNet, and MMCNN therefore use `seq_len=256`; no hidden padding or 1024-sample reconstruction is applied.
 
 ## Running StylePrior-MOMENT
 
@@ -241,8 +244,28 @@ BiM-TTA fold shards can be merged after parallel evaluation:
 python merge_bimtta_results.py --dataset REFED --seed 2025
 ```
 
-All reported comparisons use the same subject partitions. Architecture-specific input lengths and preprocessing choices are retained where required by the original baseline design.
+All reported comparisons use the same subject partitions. For Sleep-EDF, the corrected GraphSleepNet, SalientSleepNet, and MMCNN configurations use the same 256-sample cached excerpts as the other evaluated methods. Architecture-specific processing remains inside each model.
 
+
+### Corrected Sleep-EDF baseline runs
+
+The earlier 1024-sample configuration was inconsistent with the cached 256-sample Sleep-EDF inputs. MMCNN and GraphSleepNet were rerun over all 20 LOSO folds after setting `seq_len=256`. SalientSleepNet did not require a numerical rerun because its `seq_len` field is not used in the forward computation, but its configuration was also corrected to 256.
+
+| Method | Accuracy | Balanced Accuracy | Macro-F1 |
+|---|---:|---:|---:|
+| GraphSleepNet | 72.27 ± 8.27 | 55.97 ± 5.40 | 47.92 ± 5.67 |
+| MMCNN | 78.29 ± 6.93 | 63.76 ± 5.79 | 55.28 ± 5.48 |
+
+The canonical merged outputs are `results/graphsleepnet_SleepEDF_seed2025.pkl` and `results/mmcnn_SleepEDF_seed2025.pkl`.
+
+Example shard and merge commands:
+
+    CUDA_VISIBLE_DEVICES=0 python run_sleepedf_baseline_shard.py \
+      --model mmcnn --start_fold 0 --end_fold 4
+
+    python merge_sleepedf_baseline_shards.py \
+      --input_dir ./results_parallel_seq256 \
+      --result_dir ./results
 ## Ablation study
 
 The publication-level ablation uses all 20 Sleep-EDF folds and separates source-stage components from STSA. The source-only comparison contains:
@@ -309,6 +332,9 @@ python count_trainable_params.py \
   --out ./paper_tables/param_efficiency.csv
 ```
 
+Regenerate the manuscript-facing metric tables after replacing result files:
+
+    python regenerate_main_paper_tables.py
 To inspect a directory of serialized experiment outputs without rerunning training:
 
 ```bash
