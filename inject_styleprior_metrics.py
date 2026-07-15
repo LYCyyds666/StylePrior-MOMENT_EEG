@@ -66,6 +66,13 @@ def load_summaries():
                         break
                     values.append(value)
                     selected_key = key
+                if (
+                    dataset == "Sleep-EDF"
+                    and display == "Avg Prec"
+                    and values
+                    and all(abs(value) < 1e-12 for value in values)
+                ):
+                    values = []
                 if values:
                     summaries[(dataset, variant, display)] = (
                         *summarize(values),
@@ -116,6 +123,18 @@ def main():
     with table_path.open("w", encoding="utf-8", newline="") as handle:
         csv.writer(handle, lineterminator="\n").writerows(new_rows)
     write_markdown(Path("paper_tables/paper_table_all_metrics.md"), new_rows)
+
+    core_displays = {"Accuracy", "Balanced Accuracy", "F1 Score (Macro)"}
+    core_rows = [new_rows[0]] + [
+        row for row in new_rows[1:]
+        if len(row) > 1 and row[1] in core_displays
+    ]
+    accuracy_rows = [new_rows[0]] + [
+        row for row in new_rows[1:]
+        if len(row) > 1 and row[1] == "Accuracy"
+    ]
+    write_markdown(Path("paper_tables/paper_table_core_metrics.md"), core_rows)
+    write_markdown(Path("paper_tables/paper_table_accuracy.md"), accuracy_rows)
 
     long_path = Path("paper_tables/long_metrics.csv")
     with long_path.open(encoding="utf-8", newline="") as handle:

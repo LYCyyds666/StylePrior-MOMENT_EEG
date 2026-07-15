@@ -209,14 +209,12 @@ Sleep-EDF,StylePrior-MOMENT + STSA,f1_macro,F1 Score (Macro),0.49813681934456505
 Sleep-EDF,StylePrior-MOMENT + STSA,precision_macro,Precision (Macro),0.5665601876651822,0.05937775072012,20,0.5666 ± 0.0594,./results/ss_moment_SleepEDF_seed2025.pkl
 Sleep-EDF,StylePrior-MOMENT + STSA,recall_macro,Recall (Macro),0.5027110868982164,0.05992700411148433,20,0.5027 ± 0.0599,./results/ss_moment_SleepEDF_seed2025.pkl
 Sleep-EDF,StylePrior-MOMENT + STSA,roc_auc_ovr,ROC AUC,0.9263005553265236,0.028982309398965463,20,0.9263 ± 0.0290,./results/ss_moment_SleepEDF_seed2025.pkl
-Sleep-EDF,StylePrior-MOMENT + STSA,average_precision_macro,Avg Prec,0.0,0.0,20,0.0000 ± 0.0000,./results/ss_moment_SleepEDF_seed2025.pkl
 Sleep-EDF,StylePrior-MOMENT (source),accuracy,Accuracy,0.8358930213732872,0.06463610853945614,20,0.8359 ± 0.0646,./results/ss_moment_SleepEDF_seed2025.pkl
 Sleep-EDF,StylePrior-MOMENT (source),balanced_accuracy,Balanced Accuracy,0.5712642136764351,0.04225338218058748,20,0.5713 ± 0.0423,./results/ss_moment_SleepEDF_seed2025.pkl
 Sleep-EDF,StylePrior-MOMENT (source),f1_macro,F1 Score (Macro),0.545725661599664,0.05826860935235654,20,0.5457 ± 0.0583,./results/ss_moment_SleepEDF_seed2025.pkl
 Sleep-EDF,StylePrior-MOMENT (source),precision_macro,Precision (Macro),0.5622223661587082,0.08082838912895521,20,0.5622 ± 0.0808,./results/ss_moment_SleepEDF_seed2025.pkl
 Sleep-EDF,StylePrior-MOMENT (source),recall_macro,Recall (Macro),0.5712642136764351,0.04225338218058748,20,0.5713 ± 0.0423,./results/ss_moment_SleepEDF_seed2025.pkl
 Sleep-EDF,StylePrior-MOMENT (source),roc_auc_ovr,ROC AUC,0.9339692396199755,0.040301999212785156,20,0.9340 ± 0.0403,./results/ss_moment_SleepEDF_seed2025.pkl
-Sleep-EDF,StylePrior-MOMENT (source),average_precision_macro,Avg Prec,0.0,0.0,20,0.0000 ± 0.0000,./results/ss_moment_SleepEDF_seed2025.pkl
 REFED,StylePrior-MOMENT + STSA,accuracy,Accuracy,0.6865998363338789,0.05487368565576118,32,0.6866 ± 0.0549,./results/ss_moment_REFED_seed2025.pkl
 REFED,StylePrior-MOMENT + STSA,balanced_accuracy,Balanced Accuracy,0.5071731868112508,0.016701204022169427,32,0.5072 ± 0.0167,./results/ss_moment_REFED_seed2025.pkl
 REFED,StylePrior-MOMENT + STSA,f1_macro,F1 Score (Macro),0.49673741453201076,0.023648251147398682,32,0.4967 ± 0.0236,./results/ss_moment_REFED_seed2025.pkl
