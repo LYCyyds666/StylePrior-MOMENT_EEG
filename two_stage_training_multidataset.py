@@ -24,6 +24,11 @@ import numpy as np
 
 from MoE_moment.momentfm.models.SS_MOMENT import SageStreamPipeline
 from MoE_moment.momentfm.models.layers.SA_MoE import StyleAdaptor
+from experiment_protocol import (
+    initialize_unseen_subject_embeddings,
+    subject_ids_from_loader,
+)
+from routing_analysis import RoutingAccumulator, merge_routing_analyses
 from utils import set_all_seeds, compute_comprehensive_metrics, \
     print_validation_results, clear_gpu_memory
 
@@ -31,11 +36,37 @@ from utils import set_all_seeds, compute_comprehensive_metrics, \
 parser = argparse.ArgumentParser()
 parser.add_argument("--dataset", default="APAVA",
                     choices=["APAVA", "SleepEDF", "REFED"])
+parser.add_argument(
+    "--start_fold",
+    type=int,
+    default=0,
+    help="Starting fold index, inclusive and zero-based",
+)
+parser.add_argument(
+    "--end_fold",
+    type=int,
+    default=None,
+    help="Ending fold index, exclusive and zero-based",
+)
+parser.add_argument(
+    "--output_dir",
+    default="./results_corrected",
+    help="Directory for corrected fold shards and merged results",
+)
+parser.add_argument(
+    "--no_routing_analysis",
+    action="store_true",
+    help="Disable source-model routing aggregation during test evaluation",
+)
 args = parser.parse_args()
 
 # ── 全局配置 ───────────────────────────────────────────────────────────────────
 device       = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 dataset_name = args.dataset
+start_fold   = args.start_fold
+end_fold     = args.end_fold
+output_dir   = args.output_dir
+collect_routing = not args.no_routing_analysis
 model_name   = "MOMENT-1-small"
 seed         = 2025
 batch_size   = 32
@@ -190,6 +221,15 @@ def train_one_fold(train_loader, val_loader):
     best_val_bacc  = -1.0
     no_improve     = 0
     best_state     = None
+    train_subject_ids = subject_ids_from_loader(train_loader)
+    validation_subject_ids = subject_ids_from_loader(val_loader)
+
+    overlap = set(train_subject_ids) & set(validation_subject_ids)
+    if overlap:
+        raise RuntimeError(
+            "Training and validation subjects overlap: "
+            f"{sorted(overlap)}"
+        )
 
     for epoch in range(epochs):
         model.train()
@@ -226,6 +266,17 @@ def train_one_fold(train_loader, val_loader):
 
         tr_arr = np.array(tr_pr) if num_classes == 2 else np.concatenate(tr_pr, 0)
         tr_m   = compute_comprehensive_metrics(tr_l, tr_p, tr_arr, num_classes)
+
+        initialization = initialize_unseen_subject_embeddings(
+            model,
+            train_subject_ids,
+            validation_subject_ids,
+        )
+        print(
+            "  Validation embedding initialization: "
+            f"subjects={initialization['unseen_subject_ids']}, "
+            f"tables={initialization['initialized_tables']}"
+        )
 
         model.eval()
         vl_p, vl_l, vl_pr = [], [], []
@@ -273,9 +324,14 @@ def train_one_fold(train_loader, val_loader):
 
 # ── 评估 ───────────────────────────────────────────────────────────────────────
 
-def evaluate_on_test_set(model, loader):
+def evaluate_on_test_set(model, loader, collect_routing_stats=False):
     model.eval()
     p, l, pr = [], [], []
+    routing_accumulator = (
+        RoutingAccumulator()
+        if collect_routing_stats
+        else None
+    )
     with torch.no_grad():
         for bd in loader:
             if len(bd) == 3:
@@ -284,6 +340,12 @@ def evaluate_on_test_set(model, loader):
                 eeg, lbl, sid = bd[0].to(device), bd[1], None
             out    = model.classify(x_enc=eeg, subject_ids=sid)
             logits = out.logits if hasattr(out, 'logits') else out
+            if routing_accumulator is not None:
+                routing_accumulator.update(
+                    model,
+                    subject_ids=sid,
+                    labels=lbl,
+                )
             probs  = torch.softmax(logits, dim=1)
             preds  = torch.argmax(logits, dim=1)
             p.extend(preds.detach().cpu().numpy())
@@ -298,22 +360,12 @@ def evaluate_on_test_set(model, loader):
     m['predictions']   = p
     m['true_labels']   = l
     m['probabilities'] = pa
-    return m
-
-
-def initialize_unknown_subject_embeddings(model, train_sids, test_sids):
-    unk = set(test_sids) - set(train_sids)
-    if not unk:
-        return
-    for blk in model.model.encoder.block:
-        if hasattr(blk, 'shared_knowledge') and \
-           hasattr(blk.shared_knowledge, 'subject_embedding') and \
-           blk.shared_knowledge.subject_embedding is not None:
-            se = blk.shared_knowledge.subject_embedding
-            with torch.no_grad():
-                mean_e = se.weight[[s - 1 for s in train_sids]].mean(0)
-                for u in unk:
-                    se.weight[u - 1].copy_(mean_e)
+    routing_analysis = (
+        routing_accumulator.finalize()
+        if routing_accumulator is not None
+        else None
+    )
+    return m, routing_analysis
 
 
 # ── STSA 测试时自适应 ──────────────────────────────────────────────────────────
@@ -645,7 +697,29 @@ def k_fold_cross_validation():
     fold_loaders     = load_k_fold_data()
     all_fold_results = []
 
-    for fold_idx, (train_loader, val_loader, test_loader) in enumerate(fold_loaders):
+    resolved_end_fold = (
+        end_fold
+        if end_fold is not None
+        else len(fold_loaders)
+    )
+    if not (0 <= start_fold < resolved_end_fold <= len(fold_loaders)):
+        raise ValueError(
+            f"Invalid fold range {start_fold}:{resolved_end_fold}; "
+            f"available folds are 0:{len(fold_loaders)}"
+        )
+
+    selected_fold_loaders = fold_loaders[start_fold:resolved_end_fold]
+    print(
+        f"Running fold indices {start_fold}:{resolved_end_fold} "
+        f"on {device}"
+    )
+
+    for fold_offset, (
+        train_loader,
+        val_loader,
+        test_loader,
+    ) in enumerate(selected_fold_loaders):
+        fold_idx = start_fold + fold_offset
         print(f"\n{'='*55}")
         print(f"Fold {fold_idx+1}/{k_folds}  |  Dataset: {dataset_name}")
         print(f"{'='*55}")
@@ -662,13 +736,25 @@ def k_fold_cross_validation():
         model.load_state_dict(best_state['state_dict'])
 
         # 初始化未见受试者的 embedding
-        tr_s = [x for b in train_loader if len(b) == 3 for x in b[2].tolist()]
-        te_s = [x for b in test_loader  if len(b) == 3 for x in b[2].tolist()]
-        initialize_unknown_subject_embeddings(
-            model, sorted(set(tr_s)), sorted(set(te_s)))
+        tr_s = subject_ids_from_loader(train_loader)
+        te_s = subject_ids_from_loader(test_loader)
+        initialization = initialize_unseen_subject_embeddings(
+            model,
+            tr_s,
+            te_s,
+        )
+        print(
+            "  Test embedding initialization: "
+            f"subjects={initialization['unseen_subject_ids']}, "
+            f"tables={initialization['initialized_tables']}"
+        )
 
         # Baseline 评测
-        test_metrics = evaluate_on_test_set(model, test_loader)
+        test_metrics, routing_stats = evaluate_on_test_set(
+            model,
+            test_loader,
+            collect_routing_stats=collect_routing,
+        )
         print_validation_results(test_metrics, fold_idx+1,
                                  f"Fold {fold_idx+1} Baseline: ")
 
@@ -689,6 +775,7 @@ def k_fold_cross_validation():
             'test_metrics':  test_metrics,
             'tta_metrics':   tta_metrics,
             'train_metrics': best_state.get('val_metrics', {}),
+            'routing_analysis': routing_stats,
             'seed':          seed,
         })
 
@@ -747,18 +834,36 @@ def k_fold_cross_validation():
     else:
         tm, ts = None, None
 
-    os.makedirs("./results", exist_ok=True)
-    sp = f"./results/ss_moment_{dataset_name}_seed{seed}.pkl"
+    routing_analysis = merge_routing_analyses(
+        [
+            result.get("routing_analysis")
+            for result in successful
+            if result.get("routing_analysis")
+        ]
+    )
+
+    os.makedirs(output_dir, exist_ok=True)
+    if start_fold == 0 and resolved_end_fold == k_folds:
+        filename = f"ss_moment_{dataset_name}_seed{seed}.pkl"
+    else:
+        filename = (
+            f"ss_moment_{dataset_name}_"
+            f"fold{start_fold}-{resolved_end_fold}_seed{seed}.pkl"
+        )
+    sp = os.path.join(output_dir, filename)
     with open(sp, 'wb') as f:
         pickle.dump({
             'dataset':          dataset_name,
             'seed':             seed,
             'k_folds':          k_folds,
             'completed_folds':  len(successful),
+            'start_fold':       start_fold,
+            'end_fold':         resolved_end_fold,
             'baseline_metrics':     bm,
             'baseline_metrics_std': bs,
             'tta_metrics':          tm,
             'tta_metrics_std':      ts,
+            'routing_analysis':     routing_analysis,
             'fold_results':         all_fold_results,
         }, f)
     print(f"\n结果保存至: {sp}")

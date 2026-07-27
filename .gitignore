@@ -13,6 +13,11 @@ results/
 raw_sleepedf/
 data/
 results_*/
+!results_corrected/
+!results_corrected/*.pkl
+!results_corrected/*.csv
+!results_corrected/*.md
+routing_analysis/figures/
 CBraMod/
 wandb/
 log*.txt

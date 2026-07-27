@@ -6,13 +6,13 @@ ablation_sleepedf.py
 
 变体：
     full        : 完整模型，结果与 two_stage_training_multidataset.py SleepEDF 完全一致
-    wo_sisl     : w/o SISL  gamma=1, beta=0，风格变换退化为恒等变换
+    wo_scsn     : w/o SCSN  gamma=1, beta=0，风格变换退化为恒等变换
     wo_hse      : w/o HSE   去掉 SharedHyperExpert 的贡献
     wo_stsa     : w/o STSA  去掉测试时自适应
 
 用法：
     python ablation_sleepedf.py --variant full
-    python ablation_sleepedf.py --variant wo_sisl
+    python ablation_sleepedf.py --variant wo_scsn
     python ablation_sleepedf.py --variant wo_hse
     python ablation_sleepedf.py --variant wo_stsa
 """
@@ -31,13 +31,23 @@ sys.path.append('./MoE_moment')
 
 from MoE_moment.momentfm.models.SS_MOMENT import SageStreamPipeline
 from MoE_moment.momentfm.models.layers.SA_MoE import StyleAdaptor, SA_MoE
+from experiment_protocol import (
+    initialize_unseen_subject_embeddings,
+    subject_ids_from_loader,
+)
 from utils import set_all_seeds, compute_comprehensive_metrics, \
     print_validation_results, clear_gpu_memory
 
 # ── 命令行参数 ─────────────────────────────────────────────────────────────────
 parser = argparse.ArgumentParser()
 parser.add_argument("--variant", default="full",
-                    choices=["full", "wo_sisl", "wo_hse", "wo_stsa"])
+                    choices=[
+                        "full",
+                        "wo_scsn",
+                        "wo_sisl",
+                        "wo_hse",
+                        "wo_stsa",
+                    ])
 parser.add_argument("--data_dir", default="./datasets/sleepedf")
 parser.add_argument(
     "--source_only",
@@ -56,15 +66,21 @@ parser.add_argument(
     default=None,
     help="Ending fold index, exclusive and zero-based",
 )
+parser.add_argument(
+    "--output_dir",
+    default="./results_corrected",
+    help="Directory for corrected source-only ablation shards",
+)
 args = parser.parse_args()
 
 # ── 全局配置 ───────────────────────────────────────────────────────────────────
 device         = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-variant        = args.variant
+variant        = "wo_scsn" if args.variant == "wo_sisl" else args.variant
 data_dir       = args.data_dir
 source_only    = args.source_only
 start_fold     = args.start_fold
 end_fold       = args.end_fold
+output_dir     = args.output_dir
 seed           = 2025
 model_name     = "MOMENT-1-small"
 seq_len        = 256
@@ -115,16 +131,16 @@ set_all_seeds(seed)
 # 消融 Monkey-Patch
 # ════════════════════════════════════════════════════════════════════════════════
 
-# ── w/o SISL：让 gamma=1, beta=0，风格变换退化为恒等变换 ──────────────────────
+# ── w/o SCSN：让 gamma=1, beta=0，风格变换退化为恒等变换 ──────────────────────
 # 实现：patch _forward_with_shared_backbone_hypernetwork 的非 TTA 分支
 # 只改 gamma/beta 的计算，其他完全不变（保证和 full 代码路径一致）
 
-if variant == "wo_sisl":
+if variant == "wo_scsn":
     _orig_fwd = SA_MoE._forward_with_shared_backbone_hypernetwork
     _SOFTPLUS_INV_ONE = 0.5413  # softplus(0.5413) + 1e-8 ≈ 1.0
     _GAMMA_VAL = float(torch.nn.functional.softplus(torch.tensor(_SOFTPLUS_INV_ONE)).item()) + 1e-8
 
-    def _fwd_wo_sisl(self, hidden_states, subject_ids, residual,
+    def _fwd_wo_scsn(self, hidden_states, subject_ids, residual,
                      channels_times_batch, seq_len_arg, d_model, actual_batch_size):
         # TTA 模式：不改，让 STSA 正常工作
         if self.in_tta_mode and self.tta_adaptor is not None:
@@ -196,8 +212,8 @@ if variant == "wo_sisl":
 
         return output
 
-    SA_MoE._forward_with_shared_backbone_hypernetwork = _fwd_wo_sisl
-    print("wo_sisl: gamma=1, beta=0 patch applied")
+    SA_MoE._forward_with_shared_backbone_hypernetwork = _fwd_wo_scsn
+    print("wo_scsn: gamma=1, beta=0 patch applied")
 
 
 # ── w/o HSE：_calculate_moe_output 里去掉 hse_output ────────────────────────
@@ -305,6 +321,15 @@ def train_one_fold(train_loader, val_loader):
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, mode='max', factor=0.5, patience=3)
     best_val_bacc, no_improve, best_state = -1.0, 0, None
+    train_subject_ids = subject_ids_from_loader(train_loader)
+    validation_subject_ids = subject_ids_from_loader(val_loader)
+
+    overlap = set(train_subject_ids) & set(validation_subject_ids)
+    if overlap:
+        raise RuntimeError(
+            "Training and validation subjects overlap: "
+            f"{sorted(overlap)}"
+        )
 
     for epoch in range(epochs):
         model.train()
@@ -332,6 +357,17 @@ def train_one_fold(train_loader, val_loader):
 
         tr_m = compute_comprehensive_metrics(
             tr_l, tr_p, np.concatenate(tr_pr, 0), num_classes)
+
+        initialization = initialize_unseen_subject_embeddings(
+            model,
+            train_subject_ids,
+            validation_subject_ids,
+        )
+        print(
+            "  Validation embedding initialization: "
+            f"subjects={initialization['unseen_subject_ids']}, "
+            f"tables={initialization['initialized_tables']}"
+        )
 
         model.eval()
         vl_p, vl_l, vl_pr = [], [], []
@@ -392,20 +428,6 @@ def evaluate_baseline(model, loader):
     m['true_labels']   = l
     m['probabilities'] = pa
     return m
-
-
-def init_unknown_embeddings(model, train_sids, test_sids):
-    unk = set(test_sids) - set(train_sids)
-    if not unk:
-        return
-    for blk in model.model.encoder.block:
-        se = getattr(getattr(blk, 'shared_knowledge', None),
-                     'subject_embedding', None)
-        if se is not None:
-            with torch.no_grad():
-                mean_e = se.weight[[s - 1 for s in train_sids]].mean(0)
-                for u in unk:
-                    se.weight[u - 1].copy_(mean_e)
 
 
 # ── STSA（与 two_stage_training_multidataset.py 的 STSA 函数完全一致）─────────
@@ -555,9 +577,18 @@ def k_fold_cross_validation():
         model = build_model()
         model.load_state_dict(bs['state_dict'])
 
-        tr_s = [x for b in train_loader if len(b) == 3 for x in b[2].tolist()]
-        te_s = [x for b in test_loader  if len(b) == 3 for x in b[2].tolist()]
-        init_unknown_embeddings(model, sorted(set(tr_s)), sorted(set(te_s)))
+        tr_s = subject_ids_from_loader(train_loader)
+        te_s = subject_ids_from_loader(test_loader)
+        initialization = initialize_unseen_subject_embeddings(
+            model,
+            tr_s,
+            te_s,
+        )
+        print(
+            "  Test embedding initialization: "
+            f"subjects={initialization['unseen_subject_ids']}, "
+            f"tables={initialization['initialized_tables']}"
+        )
 
         bm = evaluate_baseline(model, test_loader)
         print(f"  Fold {fi+1} Baseline Acc: {bm['accuracy']:.4f}")
@@ -597,7 +628,7 @@ def k_fold_cross_validation():
         if ta:
             print(f"\n🚀 TTA Metrics:\n  Accuracy: {np.mean(ta):.4f} ± {np.std(ta):.4f}")
 
-    os.makedirs("./results", exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)
 
     result_tag = (
         f"{variant}_source_only"
@@ -610,10 +641,11 @@ def k_fold_cross_validation():
         else k_folds
     )
     sp = (
-        f"./results/ablation_sleepedf_"
+        f"ablation_sleepedf_"
         f"{result_tag}_fold{start_fold}-{end_label}_"
         f"seed{seed}.pkl"
     )
+    sp = os.path.join(output_dir, sp)
     with open(sp, 'wb') as f:
         pickle.dump({
             'variant':      variant,
