@@ -8,9 +8,9 @@ import re
 
 
 DATASETS = {
-    "APAVA": Path("results/ss_moment_APAVA_seed2025.pkl"),
-    "Sleep-EDF": Path("results/ss_moment_SleepEDF_seed2025.pkl"),
-    "REFED": Path("results/ss_moment_REFED_seed2025.pkl"),
+    "APAVA": Path("results_corrected/ss_moment_APAVA_seed2025.pkl"),
+    "Sleep-EDF": Path("results_corrected/ss_moment_SleepEDF_seed2025.pkl"),
+    "REFED": Path("results_corrected/ss_moment_REFED_seed2025.pkl"),
 }
 
 METRICS = {

@@ -28,6 +28,12 @@ The main files are organized as follows:
 │           ├── SA_MoE.py
 │           └── SA_MoE_components.py
 ├── two_stage_training_multidataset.py
+├── experiment_protocol.py
+├── routing_analysis.py
+├── export_routing_analysis.py
+├── launch_revised_experiments_10gpu.sh
+├── merge_styleprior_shards.py
+├── merge_ablation_sleepedf_shards.py
 ├── moment_internal_baselines_multidataset.py
 ├── ablation_sleepedf.py
 ├── count_trainable_params.py
@@ -55,6 +61,8 @@ The main files are organized as follows:
 ├── requirements.txt
 ├── datasets/
 ├── results/
+├── results_corrected/
+├── routing_analysis/
 └── MOMENT-1-small/
 ```
 
@@ -155,12 +163,12 @@ To select a GPU for a single process:
 CUDA_VISIBLE_DEVICES=0 python two_stage_training_multidataset.py --dataset SleepEDF
 ```
 
-The aggregated files are written to:
+The corrected implementation writes aggregated files to:
 
 ```text
-results/ss_moment_APAVA_seed2025.pkl
-results/ss_moment_SleepEDF_seed2025.pkl
-results/ss_moment_REFED_seed2025.pkl
+results_corrected/ss_moment_APAVA_seed2025.pkl
+results_corrected/ss_moment_SleepEDF_seed2025.pkl
+results_corrected/ss_moment_REFED_seed2025.pkl
 ```
 
 Each file contains the source-model metrics, STSA metrics, and fold-level records:
@@ -178,6 +186,12 @@ Each file contains the source-model metrics, STSA metrics, and fold-level record
 ```
 
 Here, `baseline_metrics` refers to source-trained StylePrior-MOMENT without target updates. `tta_metrics` refers to the optional STSA evaluation.
+
+The corrected protocol initializes each unseen validation or test subject
+embedding from the current mean of the source-training subject embeddings.
+Initialization is repeated immediately before each validation pass and before
+test evaluation. The ten-GPU launch, merge, validation, and routing-export
+commands are documented in `REVISED_EXPERIMENTS_GUIDE.md`.
 
 ## Test-time adaptation protocol
 
@@ -271,21 +285,21 @@ Example shard and merge commands:
 The publication-level ablation uses all 20 Sleep-EDF folds and separates source-stage components from STSA. The source-only comparison contains:
 
 - complete SA-MoE;
-- source model without Subject-Invariant Style Learning (SISL);
+- source model without Subject-Conditioned Style Normalization (SCSN);
 - source model without HSE.
 
-STSA must remain disabled for all three source-only rows. The complete source model with STSA is reported as a separate deployment comparison. This distinction is important: an ablation that removes SISL or HSE while leaving STSA active does not isolate the source-stage contribution.
+STSA must remain disabled for all three source-only rows. The complete source model with STSA is reported as a separate deployment comparison. This distinction is important: an ablation that removes SCSN or HSE while leaving STSA active does not isolate the source-stage contribution.
 
-Use `ablation_sleepedf.py --help` to check the options provided by the checked-out version. The archived fold-level results should be treated as the canonical values used in the manuscript.
+Use `ablation_sleepedf.py --help` to check the options provided by the checked-out version. The corrected fold-level results in `results_corrected/` are the canonical values used in the revised manuscript.
 
 | Sleep-EDF variant | Accuracy | Balanced Accuracy | Macro-F1 |
 |---|---:|---:|---:|
-| Source w/o SISL | 82.79 ± 7.31 | 56.83 ± 4.69 | 53.97 ± 5.61 |
-| Source w/o HSE | 83.43 ± 6.06 | 56.28 ± 3.44 | 53.75 ± 4.94 |
-| Complete source model | 83.59 ± 6.46 | 57.13 ± 4.23 | 54.57 ± 5.83 |
-| Complete source model + STSA | 82.77 ± 4.90 | 50.27 ± 5.99 | 49.81 ± 5.16 |
+| Source w/o SCSN | 82.70 ± 7.29 | 57.04 ± 4.96 | 54.40 ± 5.92 |
+| Source w/o HSE | 83.41 ± 6.11 | 56.16 ± 3.47 | 53.58 ± 4.86 |
+| Complete source model | 83.70 ± 5.74 | 56.94 ± 3.93 | 54.31 ± 5.12 |
+| Complete source model + STSA | 82.99 ± 4.29 | 50.23 ± 5.92 | 49.80 ± 4.82 |
 
-Neither source-component difference remains significant after Holm correction (all adjusted p ≥ 0.1289). The means support the complete SA-MoE design, but they do not establish a statistically separable contribution for SISL or HSE alone.
+Neither source-component difference remains significant after Holm correction (all adjusted p ≥ 0.2174). The fold-wise evidence therefore does not establish a statistically separable contribution for SCSN or HSE alone.
 
 ## Main results
 
@@ -296,22 +310,41 @@ Values below are mean ± standard deviation over subject-disjoint folds.
 | APAVA | MOMENT-Linear | 57.96 ± 20.48 | 65.72 ± 14.64 | 47.94 ± 17.05 |
 | APAVA | MOMENT-LoRA | 58.31 ± 18.82 | 65.51 ± 15.66 | 48.85 ± 14.33 |
 | APAVA | MOMENT-Full | 55.14 ± 16.82 | 60.38 ± 14.31 | 46.80 ± 15.64 |
-| APAVA | StylePrior-MOMENT (source) | 60.75 ± 19.03 | 67.77 ± 16.51 | 50.97 ± 12.63 |
-| APAVA | StylePrior-MOMENT + STSA | 67.63 ± 16.58 | 71.09 ± 15.40 | 59.68 ± 16.49 |
+| APAVA | StylePrior-MOMENT (source) | 66.35 ± 19.08 | 71.52 ± 17.41 | 56.50 ± 16.14 |
+| APAVA | StylePrior-MOMENT + STSA | 67.61 ± 16.89 | 71.10 ± 15.88 | 59.67 ± 16.86 |
 | Sleep-EDF | MOMENT-Linear | 78.47 ± 7.53 | 48.19 ± 2.99 | 44.21 ± 4.92 |
 | Sleep-EDF | MOMENT-LoRA | 81.31 ± 6.91 | 54.06 ± 4.52 | 50.41 ± 5.63 |
 | Sleep-EDF | MOMENT-Full | 82.30 ± 7.60 | 54.26 ± 4.17 | 51.90 ± 5.49 |
-| Sleep-EDF | StylePrior-MOMENT (source) | 83.59 ± 6.46 | 57.13 ± 4.23 | 54.57 ± 5.83 |
-| Sleep-EDF | StylePrior-MOMENT + STSA | 82.77 ± 4.90 | 50.27 ± 5.99 | 49.81 ± 5.16 |
+| Sleep-EDF | StylePrior-MOMENT (source) | 83.70 ± 5.74 | 56.94 ± 3.93 | 54.31 ± 5.12 |
+| Sleep-EDF | StylePrior-MOMENT + STSA | 82.99 ± 4.29 | 50.23 ± 5.92 | 49.80 ± 4.82 |
 | REFED | MOMENT-Linear | 75.99 ± 5.61 | 50.03 ± 0.18 | 43.21 ± 1.95 |
 | REFED | MOMENT-LoRA | 75.57 ± 5.68 | 50.00 ± 0.37 | 43.76 ± 1.91 |
 | REFED | MOMENT-Full | 74.49 ± 5.85 | 49.99 ± 0.63 | 44.79 ± 2.62 |
-| REFED | StylePrior-MOMENT (source) | 71.19 ± 6.12 | 50.71 ± 1.39 | 48.77 ± 2.71 |
-| REFED | StylePrior-MOMENT + STSA | 68.66 ± 5.49 | 50.72 ± 1.67 | 49.67 ± 2.36 |
+| REFED | StylePrior-MOMENT (source) | 71.48 ± 6.19 | 50.62 ± 1.26 | 48.43 ± 2.56 |
+| REFED | StylePrior-MOMENT + STSA | 68.58 ± 5.83 | 50.69 ± 1.68 | 49.60 ± 2.35 |
 
 The controlled same-backbone comparison favors source-trained StylePrior-MOMENT on balanced accuracy and macro-F1. The broader ranking remains metric and task dependent: CBraMod is strongest in APAVA accuracy and macro-F1, while MMCNN leads the class-balanced Sleep-EDF metrics and REFED balanced accuracy.
 
-Two-sided paired Wilcoxon signed-rank tests with Holm correction are reported for Sleep-EDF and REFED. APAVA is kept descriptive because it has only five fold-level observations. The source-only SISL and HSE changes on Sleep-EDF are numerically positive but do not remain significant after correction.
+Two-sided paired Wilcoxon signed-rank tests with Holm correction are reported for Sleep-EDF and REFED. APAVA is kept descriptive because it has only five fold-level observations. Neither the source-only SCSN nor HSE comparison on Sleep-EDF is significant after correction.
+
+## Routing analysis
+
+Source-model test evaluation records per-layer router probabilities, top-1 and
+top-k expert utilization, raw and normalized routing entropy, and
+subject/class expert counts. The corrected exports are stored in
+`routing_analysis/`.
+
+Regenerate the CSV files and optional per-dataset plots with:
+
+```bash
+for dataset in APAVA SleepEDF REFED; do
+  python export_routing_analysis.py \
+    --dataset "$dataset" \
+    --results_dir results_corrected \
+    --output_dir routing_analysis \
+    --plot
+done
+```
 
 ## Parameter accounting
 
@@ -339,7 +372,7 @@ To inspect a directory of serialized experiment outputs without rerunning traini
 
 ```bash
 python aggregate_pkl_results.py \
-  --glob './results/**/*.pkl' \
+  --glob './results_corrected/**/*.pkl' \
   --out results_summary.csv
 ```
 
